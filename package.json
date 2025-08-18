@@ -1,7 +1,7 @@
 {
   "name": "react-utility-kit",
   "type": "module",
-  "version": "1.4.0",
+  "version": "0.0.1",
   "description": "React utility components library with strict TypeScript support",
   "author": "Pavel Melnik",
   "license": "MIT",
