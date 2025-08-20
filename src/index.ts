@@ -63,6 +63,8 @@ export { Experiment } from './components/utilities/experiment'
 export type { ExperimentProps } from './components/utilities/experiment'
 export { Mirror } from './components/utilities/mirror'
 export type { MirrorProps } from './components/utilities/mirror'
+export { Resource } from './components/utilities/resource'
+export type { ResourceProps, ResourceState } from './components/utilities/resource'
 
 
 

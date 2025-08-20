@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { BaseComponentProps, RenderProp } from '../../../shared/types'
+import type { RenderProp } from '../../../shared/types'
 
 export interface ResourceState<T, E = Error> {
   data: T | null
@@ -9,7 +9,7 @@ export interface ResourceState<T, E = Error> {
   refetch: () => Promise<void>
 }
 
-export interface ResourceProps<T, E = Error> extends BaseComponentProps {
+export interface ResourceProps<T, E = Error> {
   /** Function that returns a Promise to load the resource */
   loader: () => Promise<T>
   /** Initial data (optional) */
@@ -56,14 +56,14 @@ export interface ResourceProps<T, E = Error> extends BaseComponentProps {
  */
 export function Resource<T, E = Error>({
   loader,
-  initialData = null,
+  initialData,
   immediate = true,
   deps = [],
   onError,
   onSuccess,
   children
 }: ResourceProps<T, E>) {
-  const [data, setData] = useState<T | null>(initialData)
+  const [data, setData] = useState<T | null>(initialData ?? null)
   const [error, setError] = useState<E | null>(null)
   const [loading, setLoading] = useState(immediate && !initialData)
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -165,4 +165,3 @@ Resource.Success = function Success<T>({
 }
 
 // Type exports for better TypeScript experience
-export type { ResourceState }

@@ -130,6 +130,16 @@
       "import": "./dist/components/utilities/experiment/index.js",
       "require": "./dist/components/utilities/experiment/index.cjs"
     },
+    "./resource": {
+      "types": "./dist/components/utilities/resource/index.d.cts",
+      "import": "./dist/components/utilities/resource/index.js",
+      "require": "./dist/components/utilities/resource/index.cjs"
+    },
+    "./dependency": {
+      "types": "./dist/components/utilities/dependency/index.d.cts",
+      "import": "./dist/components/utilities/dependency/index.js",
+      "require": "./dist/components/utilities/dependency/index.cjs"
+    },
     "./cycle": {
       "types": "./dist/components/animation/cycle/index.d.cts",
       "import": "./dist/components/animation/cycle/index.js",
