@@ -158,7 +158,7 @@ export function Live<T = unknown>({
       mountedRef.current = false
       stop()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoStart])
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import  { useState } from 'react'
+import { useState } from 'react'
 import { Static } from './static'
 
 describe('static Component', () => {
@@ -18,11 +18,7 @@ describe('static Component', () => {
 
     const StaticContent = () => {
       renderCount++
-      return (
-        <div data-testid="static">
-          Render:{renderCount}
-        </div>
-      )
+      return <div data-testid="static">Render:{renderCount}</div>
     }
 
     const TestWrapper = () => {
@@ -33,7 +29,11 @@ describe('static Component', () => {
           <Static>
             <StaticContent />
           </Static>
-          <button type="button" data-testid="increment" onClick={() => setCounter((prev) => prev + 1)}>
+          <button
+            type="button"
+            data-testid="increment"
+            onClick={() => setCounter((prev) => prev + 1)}
+          >
             Count: {counter}
           </button>
         </div>

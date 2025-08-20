@@ -7,7 +7,6 @@ import { isBrowser } from '../../../shared/utils'
  */
 export type GateTarget = 'bot' | 'human' | 'mobile' | 'desktop' | 'dev' | 'prod'
 
-
 export interface GateProps {
   /**
    * Target audience
@@ -26,7 +25,6 @@ export interface GateProps {
    */
   detect?: () => boolean
 }
-
 
 function isBot(): boolean {
   if (!isBrowser()) return true // SSR is considered bot
@@ -72,7 +70,6 @@ function isBot(): boolean {
   return botPatterns.some((pattern) => userAgent.includes(pattern))
 }
 
-
 function isMobile(): boolean {
   if (!isBrowser()) return false
 
@@ -101,7 +98,12 @@ function isMobile(): boolean {
  * </Gate>
  * ```
  */
-export function Gate({ for: target, children, fallback = null, detect }: GateProps): React.JSX.Element {
+export function Gate({
+  for: target,
+  children,
+  fallback = null,
+  detect,
+}: GateProps): React.JSX.Element {
   const [shouldRender, setShouldRender] = useState<boolean | null>(null)
 
   useEffect(() => {

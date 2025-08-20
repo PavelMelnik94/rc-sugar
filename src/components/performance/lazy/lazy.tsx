@@ -2,8 +2,8 @@ import type { ComponentType, ReactElement, ReactNode } from 'react'
 import type { RenderProp } from '../../../shared/types'
 import { lazy, Suspense } from 'react'
 
-export type LazyLoader<T extends Record<string, unknown> = Record<string, unknown>> = () => Promise<{ default: ComponentType<T> }>
-
+export type LazyLoader<T extends Record<string, unknown> = Record<string, unknown>> =
+  () => Promise<{ default: ComponentType<T> }>
 
 export interface LazyProps<T extends Record<string, unknown> = Record<string, unknown>> {
   /**
@@ -62,11 +62,7 @@ export function Lazy<T extends Record<string, unknown> = Record<string, unknown>
 
   return (
     <Suspense fallback={fallback}>
-      {children ? (
-        children(LazyComponent)
-      ) : (
-        <LazyComponent {...(componentProps as T)} />
-      )}
+      {children ? children(LazyComponent) : <LazyComponent {...(componentProps as T)} />}
     </Suspense>
   )
 }

@@ -17,7 +17,6 @@ export interface ExperimentVariant {
   content: ReactNode | RenderProp<string>
 }
 
-
 export interface ExperimentProps {
   /**
    * Unique experiment identifier
@@ -50,7 +49,6 @@ function simpleHash(str: string): number {
   }
   return Math.abs(hash)
 }
-
 
 function validateVariants(variants: ExperimentVariant[]): void {
   if (variants.length === 0) {

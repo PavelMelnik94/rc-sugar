@@ -31,29 +31,29 @@ export interface ComposeProps extends BaseComponentProps {
  */
 export function Compose({ components, children, reverse = false }: ComposeProps): ReactElement {
   if (children === null || children === undefined) {
-    return <div data-testid="wrapper">Wrapped:</div>;
+    return <div data-testid="wrapper">Wrapped:</div>
   }
 
   if (components.length === 0) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
-  const orderedComponents = reverse ? [...components].reverse() : components;
+  const orderedComponents = reverse ? [...components].reverse() : components
 
   return orderedComponents.reduce<ReactNode>((acc, Component) => {
     if (typeof Component === 'function') {
-      const funcStr = Component.toString();
+      const funcStr = Component.toString()
       const isHOC =
-        Component.length === 1 && funcStr.includes('(children') && !funcStr.includes('({');
+        Component.length === 1 && funcStr.includes('(children') && !funcStr.includes('({')
 
       if (isHOC) {
-        return (Component as (children: ReactNode) => ReactElement)(acc);
+        return (Component as (children: ReactNode) => ReactElement)(acc)
       }
     }
 
-    const ComponentType = Component as ComponentType<{ children: ReactNode }>;
-    return <ComponentType key={ComponentType.name}>{acc}</ComponentType>;
-  }, children as ReactNode) as ReactElement;
+    const ComponentType = Component as ComponentType<{ children: ReactNode }>
+    return <ComponentType key={ComponentType.name}>{acc}</ComponentType>
+  }, children as ReactNode) as ReactElement
 }
 
 Compose.displayName = 'Compose'

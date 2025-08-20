@@ -1,4 +1,3 @@
-
 export { Cycle } from './components/animation/cycle'
 export type { CycleProps } from './components/animation/cycle'
 export { Ticker } from './components/animation/ticker'
@@ -53,12 +52,8 @@ export { Compose } from './components/utilities/compose'
 export type { ComposeProps } from './components/utilities/compose'
 export { Debug } from './components/utilities/debug'
 export type { DebugProps } from './components/utilities/debug'
-export {
-  createDependencyContext
-} from './components/utilities/dependency'
-export type {
-  DependencyMap
-} from './components/utilities/dependency'
+export { createDependencyContext } from './components/utilities/dependency'
+export type { DependencyMap } from './components/utilities/dependency'
 export { Experiment } from './components/utilities/experiment'
 export type { ExperimentProps } from './components/utilities/experiment'
 export {
@@ -68,20 +63,17 @@ export {
   createMapper,
   createNormalizerMapper,
   identity,
-  pipe
+  pipe,
 } from './components/utilities/mapper'
 export type {
   ConditionalMapper,
   Mapper,
-  MapperConfig
+  MapperConfig,
 } from './components/utilities/mapper'
 export { Mirror } from './components/utilities/mirror'
 export type { MirrorProps } from './components/utilities/mirror'
 export { Resource } from './components/utilities/resource'
 export type { ResourceProps, ResourceState } from './components/utilities/resource'
-
-
-
 
 export type {
   AnyArray,

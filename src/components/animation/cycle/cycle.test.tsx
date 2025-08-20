@@ -1,7 +1,7 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import { Cycle } from './cycle'
- 
+
 describe('cycle', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -198,7 +198,7 @@ describe('cycle', () => {
       jest.advanceTimersByTime(1000)
     })
 
-    expect(onCycle).toHaveBeenCalledWith(1, 0) 
+    expect(onCycle).toHaveBeenCalledWith(1, 0)
 
     act(() => {
       jest.advanceTimersByTime(1000)
@@ -242,7 +242,7 @@ describe('cycle', () => {
       expect(mockSetCurrentIndex).toHaveBeenCalledWith(expect.any(Function))
 
       const updateFunction = mockSetCurrentIndex.mock.calls[0][0]
-      expect(updateFunction(0)).toBe(1) 
+      expect(updateFunction(0)).toBe(1)
       expect(updateFunction(2)).toBe(0)
     })
 

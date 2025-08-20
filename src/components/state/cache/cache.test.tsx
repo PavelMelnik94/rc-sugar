@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import  { useState } from 'react'
+import { useState } from 'react'
 import { Cache } from './cache'
 
 describe('cache Component', () => {
   it('should render children', () => {
     render(
       <Cache deps={[1, 2, 3]}>
-           <div data-testid="cached-content">Cached Content</div>
+        <div data-testid="cached-content">Cached Content</div>
       </Cache>
     )
 
@@ -29,8 +29,11 @@ describe('cache Component', () => {
           <Cache deps={['stable']}>
             <ExpensiveComponent />
           </Cache>
-          <button type="button"
-            data-testid="trigger-rerender" onClick={() => setOtherState((prev) => prev + 1)}>
+          <button
+            type="button"
+            data-testid="trigger-rerender"
+            onClick={() => setOtherState((prev) => prev + 1)}
+          >
             Trigger Re-render
           </button>
           <div data-testid="other-state">{otherState}</div>
@@ -66,7 +69,11 @@ describe('cache Component', () => {
           <Cache deps={[value]}>
             <ExpensiveComponent value={value} />
           </Cache>
-          <button type="button" data-testid="change-deps" onClick={() => setValue((prev) => prev + 1)}>
+          <button
+            type="button"
+            data-testid="change-deps"
+            onClick={() => setValue((prev) => prev + 1)}
+          >
             Change Dependencies
           </button>
         </div>
@@ -116,7 +123,7 @@ describe('cache Component', () => {
   })
 
   it('should log debug information when debug is enabled', () => {
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => { })
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     render(
       <Cache deps={[1, 2, 3]} debug={true} key="test-cache">
@@ -132,7 +139,7 @@ describe('cache Component', () => {
   })
 
   it('should not log debug information when debug is disabled', () => {
-    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => { })
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     render(
       <Cache deps={[1, 2, 3]} debug={false}>

@@ -94,7 +94,10 @@ export function isRegExp(value: unknown): value is RegExp {
 }
 
 export function isPromise<T = unknown>(value: unknown): value is Promise<T> {
-  return value instanceof Promise || (isObject(value) && isFunction((value as Record<string, unknown>).then))
+  return (
+    value instanceof Promise ||
+    (isObject(value) && isFunction((value as Record<string, unknown>).then))
+  )
 }
 
 export function isMap<K = unknown, V = unknown>(value: unknown): value is Map<K, V> {
@@ -126,7 +129,9 @@ export function isIterable<T = unknown>(value: unknown): value is Iterable<T> {
 }
 
 export function isAsyncIterable<T = unknown>(value: unknown): value is AsyncIterable<T> {
-  return value != null && isFunction((value as Record<string | symbol, unknown>)[Symbol.asyncIterator])
+  return (
+    value != null && isFunction((value as Record<string | symbol, unknown>)[Symbol.asyncIterator])
+  )
 }
 
 export function isEmpty(value: unknown): boolean {
@@ -164,28 +169,19 @@ export function assert(condition: unknown, message?: string): asserts condition 
 
 export function assertIsString(value: unknown, message?: string): asserts value is string {
   if (!isString(value)) {
-    throw createAssertionError(
-      message ?? `Expected string, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected string, got ${typeof value}`, { value })
   }
 }
 
 export function assertIsNumber(value: unknown, message?: string): asserts value is number {
   if (!isNumber(value)) {
-    throw createAssertionError(
-      message ?? `Expected number, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected number, got ${typeof value}`, { value })
   }
 }
 
 export function assertIsBoolean(value: unknown, message?: string): asserts value is boolean {
   if (!isBoolean(value)) {
-    throw createAssertionError(
-      message ?? `Expected boolean, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected boolean, got ${typeof value}`, { value })
   }
 }
 
@@ -194,28 +190,22 @@ export function assertIsObject(
   message?: string
 ): asserts value is Record<string, unknown> {
   if (!isObject(value)) {
-    throw createAssertionError(
-      message ?? `Expected object, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected object, got ${typeof value}`, { value })
   }
 }
 
 export function assertIsArray<T = unknown>(value: unknown, message?: string): asserts value is T[] {
   if (!isArray(value)) {
-    throw createAssertionError(
-      message ?? `Expected array, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected array, got ${typeof value}`, { value })
   }
 }
 
-export function assertIsFunction(value: unknown, message?: string): asserts value is (...args: unknown[]) => unknown {
+export function assertIsFunction(
+  value: unknown,
+  message?: string
+): asserts value is (...args: unknown[]) => unknown {
   if (!isFunction(value)) {
-    throw createAssertionError(
-      message ?? `Expected function, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected function, got ${typeof value}`, { value })
   }
 }
 
@@ -233,28 +223,19 @@ export function assertIsNonEmptyArray<T = unknown>(
   message?: string
 ): asserts value is [T, ...T[]] {
   if (!isNonEmptyArray(value)) {
-    throw createAssertionError(
-      message ?? 'Expected non-empty array',
-      { value }
-    )
+    throw createAssertionError(message ?? 'Expected non-empty array', { value })
   }
 }
 
 export function assertIsDate(value: unknown, message?: string): asserts value is Date {
   if (!isDate(value)) {
-    throw createAssertionError(
-      message ?? `Expected Date, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected Date, got ${typeof value}`, { value })
   }
 }
 
 export function assertIsError(value: unknown, message?: string): asserts value is Error {
   if (!isError(value)) {
-    throw createAssertionError(
-      message ?? `Expected Error, got ${typeof value}`,
-      { value }
-    )
+    throw createAssertionError(message ?? `Expected Error, got ${typeof value}`, { value })
   }
 }
 
@@ -268,11 +249,14 @@ export function createAssertion<T>(schema: z.ZodType<T>, name?: string) {
   return function assertType(value: unknown, message?: string): asserts value is T {
     const result = schema.safeParse(value)
     if (!result.success) {
-      const typeName = name ?? (schema as z.ZodSchema & { _def?: { typeName?: string } })._def?.typeName ?? 'unknown'
+      const typeName =
+        name ??
+        (schema as z.ZodSchema & { _def?: { typeName?: string } })._def?.typeName ??
+        'unknown'
       const errorMessage = message ?? `Expected ${typeName}, validation failed`
       throw createAssertionError(errorMessage, {
         value,
-        zodErrors: result.error.issues
+        zodErrors: result.error.issues,
       })
     }
   }
@@ -340,6 +324,6 @@ export function createValidator<T>(schema: z.ZodType<T>, name?: string): TypeVal
   const guard = createTypeGuard(schema)
   const assert = createAssertion(schema, name)
   const safe = createSafeTypeGuard(schema)
-  
+
   return { guard, assert, schema, safe }
 }

@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-
 export interface ZoomProps {
   /**
    * Children to zoom
@@ -89,10 +88,10 @@ export function Zoom({
     newScale = Math.max(minScale, Math.min(maxScale, newScale))
 
     if (newScale !== calculatedScale) {
-       // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-       setCalculatedScale(newScale)
-       onScaleChange?.(newScale)
-     }
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+      setCalculatedScale(newScale)
+      onScaleChange?.(newScale)
+    }
   }, [maxScale, minScale, fitWidth, fitHeight, calculatedScale, onScaleChange])
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react'
 import { memo, useMemo } from 'react'
 
-
 export interface StaticProps {
   /**
    * Children to render statically
@@ -49,7 +48,7 @@ export function Static({ children, deps }: StaticProps): ReactElement {
     deps ?? []
   )
 
-  if (deps !== undefined) { 
+  if (deps !== undefined) {
     return <MemoizedComponent children={children} />
   }
 

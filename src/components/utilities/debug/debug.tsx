@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 
-
 export interface DebugProps {
   /**
    * Children to render
@@ -35,9 +34,14 @@ export interface DebugProps {
  * </Debug>
  * ```
  */
-const defaultData: Record<string, unknown> = {};
+const defaultData: Record<string, unknown> = {}
 
-export function Debug({ children, label = 'Debug', disabled = false, data = defaultData }: DebugProps): ReactNode {
+export function Debug({
+  children,
+  label = 'Debug',
+  disabled = false,
+  data = defaultData,
+}: DebugProps): ReactNode {
   useEffect(() => {
     if (disabled) {
       return

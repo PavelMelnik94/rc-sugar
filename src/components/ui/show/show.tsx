@@ -1,6 +1,5 @@
 import type { ReactElement, ReactNode } from 'react'
 
-
 export interface ShowProps {
   /**
    * The condition to evaluate

@@ -2,7 +2,6 @@ import type { ReactElement } from 'react'
 import type { RenderProp } from '../../../shared/types'
 import { useState } from 'react'
 
-
 export interface ToggleState {
   /**
    * Current toggle state
@@ -25,7 +24,6 @@ export interface ToggleState {
    */
   setState: (state: boolean) => void
 }
-
 
 export interface ToggleProps {
   /**

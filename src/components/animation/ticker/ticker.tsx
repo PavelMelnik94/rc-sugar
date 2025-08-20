@@ -96,8 +96,8 @@ export function Ticker({
   const restart = (): void => {
     stop()
     setCount(0)
-    setIsRunning(true) 
-  } 
+    setIsRunning(true)
+  }
 
   useEffect((): (() => void) | void => {
     if (!isRunning) return

@@ -240,7 +240,7 @@ describe('type Guards', () => {
       it('should return true for arrays', () => {
         expect(isArray([])).toBe(true)
         expect(isArray([1, 2, 3])).toBe(true)
-        expect(isArray(Array.from({length: 5}))).toBe(true)
+        expect(isArray(Array.from({ length: 5 }))).toBe(true)
       })
 
       it('should return false for non-arrays', () => {
@@ -448,7 +448,7 @@ describe('type Guards', () => {
             },
             async next() {
               return { value: 1, done: true }
-            }
+            },
           }
           expect(isAsyncIterable(asyncIterable)).toBe(true)
         })
@@ -681,7 +681,7 @@ describe('type Guards', () => {
     describe('createTypeGuard', () => {
       it('should create working type guard from schema', () => {
         const isStringType = createTypeGuard(stringSchema)
-        
+
         expect(isStringType('hello')).toBe(true)
         expect(isStringType(123)).toBe(false)
         expect(isStringType(null)).toBe(false)
@@ -689,7 +689,7 @@ describe('type Guards', () => {
 
       it('should work with complex schemas', () => {
         const isObjectType = createTypeGuard(objectSchema)
-        
+
         expect(isObjectType({ name: 'John', age: 30 })).toBe(true)
         expect(isObjectType({ name: 'John' })).toBe(false)
         expect(isObjectType({})).toBe(false)
@@ -699,14 +699,14 @@ describe('type Guards', () => {
     describe('createAssertion', () => {
       it('should create working assertion from schema', () => {
         const assertIsStringType = createAssertion(stringSchema, 'string')
-        
+
         expect(() => assertIsStringType('hello')).not.toThrow()
         expect(() => assertIsStringType(123)).toThrow('Expected string, validation failed')
       })
 
       it('should use custom message', () => {
         const assertIsStringType = createAssertion(stringSchema)
-        
+
         expect(() => assertIsStringType(123, 'Custom error')).toThrow('Custom error')
       })
     })
@@ -738,7 +738,7 @@ describe('type Guards', () => {
     describe('createSafeTypeGuard', () => {
       it('should return success result for valid input', () => {
         const safeIsString = createSafeTypeGuard(stringSchema)
-        
+
         const result = safeIsString('hello')
         expect(result.success).toBe(true)
         expect(result.data).toBe('hello')
@@ -747,7 +747,7 @@ describe('type Guards', () => {
 
       it('should return error result for invalid input', () => {
         const safeIsString = createSafeTypeGuard(stringSchema)
-        
+
         const result = safeIsString(123)
         expect(result.success).toBe(false)
         expect(result.data).toBeUndefined()
@@ -758,16 +758,16 @@ describe('type Guards', () => {
     describe('createValidator', () => {
       it('should create complete validator with all methods', () => {
         const validator = createValidator(stringSchema, 'CustomString')
-        
+
         expect(validator.guard('hello')).toBe(true)
         expect(validator.guard(123)).toBe(false)
-        
+
         expect(() => validator.assert('hello')).not.toThrow()
         expect(() => validator.assert(123)).toThrow()
-        
+
         expect(validator.safe?.('hello').success).toBe(true)
         expect(validator.safe?.(123).success).toBe(false)
-        
+
         expect(validator.schema).toBe(stringSchema)
       })
     })
@@ -777,7 +777,7 @@ describe('type Guards', () => {
     describe('nonEmptyString', () => {
       it('should validate non-empty strings', () => {
         const guard = createTypeGuard(CommonSchemas.nonEmptyString)
-        
+
         expect(guard('hello')).toBe(true)
         expect(guard('')).toBe(false)
         expect(guard(123)).toBe(false)
@@ -787,7 +787,7 @@ describe('type Guards', () => {
     describe('positiveNumber', () => {
       it('should validate positive numbers', () => {
         const guard = createTypeGuard(CommonSchemas.positiveNumber)
-        
+
         expect(guard(1)).toBe(true)
         expect(guard(0)).toBe(false)
         expect(guard(-1)).toBe(false)
@@ -797,7 +797,7 @@ describe('type Guards', () => {
     describe('email', () => {
       it('should validate email addresses', () => {
         const guard = createTypeGuard(CommonSchemas.email)
-        
+
         expect(guard('test@example.com')).toBe(true)
         expect(guard('invalid-email')).toBe(false)
         expect(guard(123)).toBe(false)
@@ -807,7 +807,7 @@ describe('type Guards', () => {
     describe('jsonString', () => {
       it('should validate JSON strings', () => {
         const guard = createTypeGuard(CommonSchemas.jsonString)
-        
+
         expect(guard('{"key": "value"}')).toBe(true)
         expect(guard('[1, 2, 3]')).toBe(true)
         expect(guard('"string"')).toBe(true)
@@ -819,7 +819,7 @@ describe('type Guards', () => {
     describe('nonEmptyArray', () => {
       it('should validate non-empty arrays', () => {
         const guard = createTypeGuard(CommonSchemas.nonEmptyArray)
-        
+
         expect(guard([1, 2, 3])).toBe(true)
         expect(guard([1])).toBe(true)
         expect(guard([])).toBe(false)
@@ -832,7 +832,7 @@ describe('type Guards', () => {
     describe('createAssertionError', () => {
       it('should create proper AssertionError', () => {
         const error = createAssertionError('Test message')
-        
+
         expect(error).toBeInstanceOf(Error)
         expect(error.name).toBe('AssertionError')
         expect(error.message).toBe('Test message')
@@ -841,7 +841,7 @@ describe('type Guards', () => {
       it('should include cause when provided', () => {
         const cause = new Error('Original error')
         const error = createAssertionError('Test message', cause)
-        
+
         expect((error as any).cause).toBe(cause)
       })
     })

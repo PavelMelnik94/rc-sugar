@@ -97,10 +97,10 @@ describe('ticker', () => {
       },
       { timeout: 200 }
     )
-    
+
     // Verify we got at least 2 calls (could be more due to timing)
     expect(onTick.mock.calls.length).toBeGreaterThanOrEqual(2)
-    
+
     unmount()
   })
 

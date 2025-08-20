@@ -30,7 +30,7 @@ export default defineConfig({
     'components/utilities/dependency/index': 'src/components/utilities/dependency/index.ts',
     'components/animation/cycle/index': 'src/components/animation/cycle/index.ts',
     'components/navigation/micro-route/index': 'src/components/navigation/micro-route/index.ts',
-    'components/interaction/gesture-pad/index': 'src/components/interaction/gesture-pad/index.ts'
+    'components/interaction/gesture-pad/index': 'src/components/interaction/gesture-pad/index.ts',
   },
   format: ['cjs', 'esm'],
   dts: true,
@@ -40,5 +40,5 @@ export default defineConfig({
   external: ['react', 'react-dom', 'zod'],
   esbuildOptions(options) {
     options.jsx = 'automatic'
-  }
+  },
 })

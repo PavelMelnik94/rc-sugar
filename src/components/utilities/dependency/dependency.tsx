@@ -21,12 +21,12 @@ export const createDependencyContext = <T extends DependencyMap>(options?: {
   createTestProvider: (dependencies: Partial<T>) => React.FC<{ children: React.ReactNode }>
 } => {
   const Context = React.createContext<T | null>(null)
-  
-  const ProviderComponent: React.FC<{ dependencies: T; children: React.ReactNode; isDebug?: boolean }> = ({ 
-    dependencies, 
-    children,
-    isDebug = false
-  }) => {
+
+  const ProviderComponent: React.FC<{
+    dependencies: T
+    children: React.ReactNode
+    isDebug?: boolean
+  }> = ({ dependencies, children, isDebug = false }) => {
     if (isDebug && options?.schema) {
       try {
         options.schema.parse(dependencies)
@@ -34,19 +34,17 @@ export const createDependencyContext = <T extends DependencyMap>(options?: {
         console.error('Dependency validation failed:', error)
       }
     }
-    
-    return (
-      <Context value={dependencies}>
-        {children}
-      </Context>
-    )
+
+    return <Context value={dependencies}>{children}</Context>
   }
-  
-  ProviderComponent.displayName = options?.contextName ? `${options.contextName}Provider` : 'DependencyProvider'
-  
+
+  ProviderComponent.displayName = options?.contextName
+    ? `${options.contextName}Provider`
+    : 'DependencyProvider'
+
   const Provider = React.memo(ProviderComponent)
   Provider.displayName = ProviderComponent.displayName
-  
+
   function useDependency(): T
   function useDependency<K extends keyof T>(key: K): T[K]
   function useDependency<K extends keyof T>(key?: K): T | T[K] {
@@ -59,21 +57,23 @@ export const createDependencyContext = <T extends DependencyMap>(options?: {
     }
     if (!(key in context)) {
       const availableKeys = Object.keys(context).join(', ')
-      throw new Error(`Dependency "${String(key)}" not found. Available dependencies: [${availableKeys}]`)
+      throw new Error(
+        `Dependency "${String(key)}" not found. Available dependencies: [${availableKeys}]`
+      )
     }
     return context[key]
   }
-  
-  const createTestProvider = (dependencies: Partial<T>): React.FC<{ children: React.ReactNode }> => {
+
+  const createTestProvider = (
+    dependencies: Partial<T>
+  ): React.FC<{ children: React.ReactNode }> => {
     const TestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-      <Provider dependencies={dependencies as T}>
-        {children}
-      </Provider>
+      <Provider dependencies={dependencies as T}>{children}</Provider>
     )
     TestProvider.displayName = 'TestProvider'
     return TestProvider
   }
-  
+
   return { Provider, useDependency, createTestProvider }
 }
 
