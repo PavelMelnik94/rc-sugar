@@ -247,6 +247,13 @@ pnpm add react-utility-kit
 - **Use Cases**: Component synchronization, state mirroring, parallel rendering
 - **Key Features**: State synchronization, prop mirroring, bidirectional updates
 
+#### Mapper
+**Purpose**: Data transformation and mapping utilities
+
+- **📖 Documentation**: [English](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/mapper/README.md) | [Русский](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/mapper/README.ru.md)
+- **Use Cases**: API response transformation, data normalization, pipeline processing, validation
+- **Key Features**: TypeScript support, Zod validation, composition patterns, performance optimizations
+
 #### Experiment
 **Purpose**: A/B testing and feature experimentation
 
