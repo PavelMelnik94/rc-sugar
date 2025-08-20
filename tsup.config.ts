@@ -24,6 +24,8 @@ export default defineConfig({
     'components/state/atom/index': 'src/components/state/atom/index.ts',
     'components/utilities/mirror/index': 'src/components/utilities/mirror/index.ts',
     'components/utilities/experiment/index': 'src/components/utilities/experiment/index.ts',
+    'components/utilities/resource/index': 'src/components/utilities/resource/index.ts',
+    'components/utilities/dependency/index': 'src/components/utilities/dependency/index.ts',
     'components/animation/cycle/index': 'src/components/animation/cycle/index.ts',
     'components/navigation/micro-route/index': 'src/components/navigation/micro-route/index.ts',
     'components/interaction/gesture-pad/index': 'src/components/interaction/gesture-pad/index.ts'

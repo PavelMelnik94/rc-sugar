@@ -254,6 +254,13 @@ pnpm add react-utility-kit
 - **Use Cases**: Service injection, dependency management, testable architecture
 - **Key Features**: Type-safe injection, provider hierarchy, service lifecycle
 
+#### Resource
+**Purpose**: Async resource management with loading states
+
+- **📖 Documentation**: [English](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/resource/README.md) | [Русский](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/resource/README.ru.md)
+- **Use Cases**: API data loading, async operations, FSD architecture integration
+- **Key Features**: Loading states, error handling, request cancellation, dependency tracking
+
 ## 🚀 Quick Start
 
 ```tsx
