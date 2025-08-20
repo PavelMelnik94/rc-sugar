@@ -316,4 +316,4 @@ MIT License - see the [LICENSE](./LICENSE) file for details.
 
 ---
 
-**Made with ❤️ by [Pavel Melnik](https://github.com/PavelMelnik94)**
+**Made with ❤️ by [Pavel Melnik](https://github.com/PavelMelnik94)** via Github Copilot
