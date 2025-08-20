@@ -20,6 +20,7 @@ export default defineConfig({
     'components/ui/scroll/index': 'src/components/ui/scroll/index.ts',
     'components/ui/gate/index': 'src/components/ui/gate/index.ts',
     'components/utilities/compose/index': 'src/components/utilities/compose/index.ts',
+    'components/utilities/mapper/index': 'src/components/utilities/mapper/index.ts',
     'components/state/live/index': 'src/components/state/live/index.ts',
     'components/state/atom/index': 'src/components/state/atom/index.ts',
     'components/utilities/mirror/index': 'src/components/utilities/mirror/index.ts',

@@ -61,6 +61,20 @@ export type {
 } from './components/utilities/dependency'
 export { Experiment } from './components/utilities/experiment'
 export type { ExperimentProps } from './components/utilities/experiment'
+export {
+  composeMappers,
+  createBatchMapper,
+  createConditionalMapper,
+  createMapper,
+  createNormalizerMapper,
+  identity,
+  pipe
+} from './components/utilities/mapper'
+export type {
+  ConditionalMapper,
+  Mapper,
+  MapperConfig
+} from './components/utilities/mapper'
 export { Mirror } from './components/utilities/mirror'
 export type { MirrorProps } from './components/utilities/mirror'
 
