@@ -1,0 +1,65 @@
+# Configuration for automatic labeling of pull requests
+# https://github.com/actions/labeler
+
+# Components
+'component: animation':
+  - src/components/animation/**
+
+'component: interaction':
+  - src/components/interaction/**
+
+'component: iteration':
+  - src/components/iteration/**
+
+'component: navigation':
+  - src/components/navigation/**
+
+'component: performance':
+  - src/components/performance/**
+
+'component: state':
+  - src/components/state/**
+
+'component: ui':
+  - src/components/ui/**
+
+'component: utilities':
+  - src/components/utilities/**
+
+# Documentation
+documentation:
+  - '**/*.md'
+  - 'README*'
+
+# Tests
+tests:
+  - '**/*.test.*'
+  - '**/*.spec.*'
+  - setupTests.ts
+  - jest.config.*
+
+# Dependencies
+dependencies:
+  - package.json
+  - package-lock.json
+
+# Build system
+build:
+  - tsconfig.json
+  - tsup.config.ts
+  - babel.config.*
+
+# Linting & formatting
+linting:
+  - eslint.config.*
+  - biome.json
+  - .eslintrc*
+
+# GitHub workflows
+github:
+  - .github/**
+
+# Types
+types:
+  - '**/*.d.ts'
+  - src/shared/types.ts

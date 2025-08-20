@@ -45,6 +45,7 @@ export function Static({ children, deps }: StaticProps): ReactElement {
     () => {
       return memo(({ children }: { children: ReactNode }) => <>{children}</>)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps ?? []
   )
 

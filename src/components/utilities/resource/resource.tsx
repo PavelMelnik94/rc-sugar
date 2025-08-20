@@ -112,6 +112,7 @@ export function Resource<T, E = Error>({
     if (immediate) {
       loadResource()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadResource, immediate, ...deps])
 
   useEffect(() => {

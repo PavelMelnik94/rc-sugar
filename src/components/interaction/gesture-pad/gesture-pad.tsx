@@ -148,6 +148,7 @@ export function GesturePad({
     if (touches.length === 2) {
       initialPinchDistanceRef.current = getDistance(touches[0], touches[1])
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gestures.longPress, longPressTime, preventDefault])
 
   const handleTouchMove = useCallback((e: TouchEvent): void => {

@@ -135,6 +135,7 @@ export function Focus({
     },
   }
 
+  // eslint-disable-next-line react/no-clone-element
   return cloneElement(children, childProps)
 }
 
