@@ -44,6 +44,11 @@
       "import": "./dist/components/utilities/debug/index.js",
       "require": "./dist/components/utilities/debug/index.cjs"
     },
+    "./type-guards": {
+      "types": "./dist/components/utilities/type-guards/index.d.cts",
+      "import": "./dist/components/utilities/type-guards/index.js",
+      "require": "./dist/components/utilities/type-guards/index.cjs"
+    },
     "./tap": {
       "types": "./dist/components/interaction/tap/index.d.cts",
       "import": "./dist/components/interaction/tap/index.js",
@@ -218,5 +223,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "zod": "^4.0.17"
   }
 }

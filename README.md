@@ -36,7 +36,7 @@ React Utility Kit addresses common development challenges by providing:
 - **🔄 State Management**: Lightweight, type-safe state solutions without global stores
 - **⚡ Performance Optimization**: Lazy loading, memoization, and efficient rendering patterns
 - **🎨 UI Utilities**: Conditional rendering, animations, and interactive components
-- **🔧 Developer Tools**: Debugging utilities, dependency injection, and development helpers
+- **🔧 Developer Tools**: Debugging utilities, dependency injection, type guards, and development helpers
 - **📱 Interaction Handling**: Touch gestures, focus management, and user input processing
 - **🚀 Modern Patterns**: Render props, compound components, and effect-free code
 
@@ -225,6 +225,13 @@ pnpm add react-utility-kit
 - **📖 Documentation**: [English](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/debug/README.md) | [Русский](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/debug/README.ru.md)
 - **Use Cases**: Development debugging, state inspection, performance monitoring
 - **Key Features**: Props logging, render tracking, performance metrics
+
+#### Type Guards
+**Purpose**: Type guards and function assertions with Zod integration
+
+- **📖 Documentation**: [English](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/type-guards/README.md) | [Русский](https://github.com/PavelMelnik94/react-utility-kit/blob/main/src/components/utilities/type-guards/README.ru.md)
+- **Use Cases**: Runtime type checking, input validation, type-safe assertions
+- **Key Features**: Complete type coverage, Zod schema integration, assertion functions
 
 #### Compose
 **Purpose**: Component composition and higher-order patterns
