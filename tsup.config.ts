@@ -7,6 +7,7 @@ export default defineConfig({
     'components/iteration/for/index': 'src/components/iteration/for/index.ts',
     'components/iteration/repeat/index': 'src/components/iteration/repeat/index.ts',
     'components/utilities/debug/index': 'src/components/utilities/debug/index.ts',
+    'components/utilities/type-guards/index': 'src/components/utilities/type-guards/index.ts',
     'components/interaction/tap/index': 'src/components/interaction/tap/index.ts',
     'components/performance/lazy/index': 'src/components/performance/lazy/index.ts',
     'components/performance/static/index': 'src/components/performance/static/index.ts',
@@ -33,7 +34,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', 'zod'],
   esbuildOptions(options) {
     options.jsx = 'automatic'
   }
