@@ -2,10 +2,10 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { Live } from './live'
 
 describe('live Component', () => {
-  let mockSource: ReturnType<typeof jest.fn>
+  let mockSource: jest.MockedFunction<() => Promise<string>>
 
   beforeEach(() => {
-    mockSource = jest.fn()
+    mockSource = jest.fn() as jest.MockedFunction<() => Promise<string>>
   })
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('live Component', () => {
       <Live source={mockSource} initial="initial-value" autoStart={false}>
         {({ value, isLoading, isLive, error, updateCount }) => (
           <div>
-            <div data-testid="value">{value ?? null}</div>
+            <div data-testid="value">{typeof value === 'string' ? value : 'null'}</div>
             <div data-testid="loading">{isLoading.toString()}</div>
             <div data-testid="live">{isLive.toString()}</div>
             <div data-testid="error">{error?.message || 'null'}</div>
@@ -168,13 +168,13 @@ describe('live Component', () => {
 
   it('should track previous values', async () => {
     let callCount = 0
-    mockSource.mockImplementation(() => {
+    const mockNumberSource = jest.fn().mockImplementation(() => {
       callCount++
       return Promise.resolve(callCount)
     })
 
     render(
-      <Live source={mockSource} autoStart={false}>
+      <Live source={mockNumberSource} autoStart={false}>
         {({ value, previousValue, refresh }) => (
           <div>
             <div data-testid="value">{String(value)}</div>
@@ -202,7 +202,7 @@ describe('live Component', () => {
 
   it('should use custom compare function', async () => {
     let callCount = 0
-    mockSource.mockImplementation(() => {
+    const mockComplexSource = jest.fn().mockImplementation(() => {
       callCount++
       return Promise.resolve({ id: 1, timestamp: callCount })
     })
@@ -211,10 +211,10 @@ describe('live Component', () => {
     const compare = (prev: any, next: any) => prev?.id !== next?.id
 
     render(
-      <Live source={mockSource} autoStart={false} compare={compare}>
+      <Live source={mockComplexSource} autoStart={false} compare={compare}>
         {({ value, updateCount, refresh }) => (
           <div>
-            <div data-testid="timestamp">{value?.timestamp}</div>
+            <div data-testid="timestamp">{(value as any)?.timestamp}</div>
             <div data-testid="count">{updateCount}</div>
             <button type="button" onClick={refresh}>Refresh</button>
           </div>

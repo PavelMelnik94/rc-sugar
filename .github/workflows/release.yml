@@ -64,16 +64,17 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Build component packages
-        run: npm run build:packages
-
       - name: Setup Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-
-      - name: Publish component packages
+      - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run publish:packages || echo "Individual packages already published or main package not updated"
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "NPM_TOKEN not found, skipping publish"
+          else
+            npm publish || echo "Publish skipped - version already exists or no changes"
+          fi
