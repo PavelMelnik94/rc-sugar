@@ -1,34 +1,46 @@
-name: Summarize new issues
+---
+name: Auto-label issues
 
 on:
   issues:
     types: [opened]
 
 jobs:
-  summary:
+  auto-label:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      models: read
       contents: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run AI inference
-        id: inference
-        uses: actions/ai-inference@v1
-        with:
-          prompt: |
-            Summarize the following GitHub issue in one paragraph:
-            Title: ${{ github.event.issue.title }}
-            Body: ${{ github.event.issue.body }}
-
-      - name: Comment with AI summary
+      - name: Add bug label to issues with 'bug' in title
+        if: >
+          contains(github.event.issue.title, 'bug') ||
+          contains(github.event.issue.title, 'Bug')
         run: |
-          gh issue comment $ISSUE_NUMBER --body '${{ steps.inference.outputs.response }}'
+          gh issue edit ${{ github.event.issue.number }} --add-label "bug"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          RESPONSE: ${{ steps.inference.outputs.response }}
+
+      - name: Add feature label to issues with 'feature' in title
+        if: >
+          contains(github.event.issue.title, 'feature') ||
+          contains(github.event.issue.title, 'Feature')
+        run: |
+          gh issue edit ${{ github.event.issue.number }} \
+            --add-label "enhancement"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add documentation label to issues with 'doc' in title
+        if: >
+          contains(github.event.issue.title, 'doc') ||
+          contains(github.event.issue.title, 'documentation')
+        run: |
+          gh issue edit ${{ github.event.issue.number }} \
+            --add-label "documentation"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

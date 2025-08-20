@@ -40,9 +40,9 @@ export const createMapper = <TInput, TOutput>(
   config: MapperConfig<TInput, TOutput>
 ): Mapper<TInput, TOutput> => {
   const { transform, schema, name = 'AnonymousMapper', memoize = false } = config
-  
+
   const processTransform = memoize ? createMemoizedTransform(transform) : transform
-  
+
   const validateAndTransform = (input: TInput): TOutput => {
     if (schema) {
       try {
@@ -53,25 +53,25 @@ export const createMapper = <TInput, TOutput>(
     }
     return processTransform(input)
   }
-  
+
   const mapper: Mapper<TInput, TOutput> = {
     map: validateAndTransform,
-    
+
     mapBatch: (inputs: TInput[]): TOutput[] => {
       return inputs.map(validateAndTransform)
     },
-    
+
     name,
-    
+
     compose: <TNext>(nextMapper: Mapper<TOutput, TNext>): Mapper<TInput, TNext> => {
       return createMapper({
         transform: (input: TInput) => nextMapper.map(validateAndTransform(input)),
         name: `${name} → ${nextMapper.name}`,
-        memoize
+        memoize,
       })
-    }
+    },
   }
-  
+
   return mapper
 }
 
@@ -96,12 +96,12 @@ export const createConditionalMapper = <TInput, TOutput>(
     }
     throw new Error('Conditional mapper: condition is false and no fallback mapper provided')
   }
-  
+
   return {
     map: conditionalTransform,
     condition,
     trueMapper,
-    falseMapper
+    falseMapper,
   }
 }
 
@@ -118,25 +118,25 @@ export const createBatchMapper = <TInput, TOutput>(
   originalMapper: Mapper<TInput, TOutput>
 } => {
   const { chunkSize = 1000, parallel = false } = options || {}
-  
+
   const processBatch = (inputs: TInput[]): TOutput[] => {
     if (inputs.length <= chunkSize || !parallel) {
       return mapper.mapBatch(inputs)
     }
-    
+
     const chunks: TInput[][] = []
     for (let i = 0; i < inputs.length; i += chunkSize) {
       chunks.push(inputs.slice(i, i + chunkSize))
     }
-    
-    return chunks.flatMap(chunk => mapper.mapBatch(chunk))
+
+    return chunks.flatMap((chunk) => mapper.mapBatch(chunk))
   }
-  
+
   return {
     map: processBatch,
     chunkSize,
     parallel,
-    originalMapper: mapper
+    originalMapper: mapper,
   }
 }
 
@@ -146,7 +146,7 @@ export const createNormalizerMapper = <TInput, TOutput>(
 ): Mapper<TInput, TOutput> => {
   const transform = (input: TInput): TOutput => {
     const output = {} as TOutput
-    
+
     for (const [outputKey, mapping] of Object.entries(fieldMappings)) {
       if (typeof mapping === 'function') {
         ;(output as Record<string, unknown>)[outputKey] = mapping(input)
@@ -154,21 +154,21 @@ export const createNormalizerMapper = <TInput, TOutput>(
         ;(output as Record<string, unknown>)[outputKey] = input[mapping as keyof TInput]
       }
     }
-    
+
     return output
   }
-  
+
   return createMapper({
     transform,
     schema,
-    name: 'NormalizerMapper'
+    name: 'NormalizerMapper',
   })
 }
 
 export const identity = <T>(): Mapper<T, T> => {
   return createMapper({
     transform: (input: T) => input,
-    name: 'IdentityMapper'
+    name: 'IdentityMapper',
   })
 }
 
@@ -179,10 +179,10 @@ export const pipe = <TInput, TOutput>(
   if (mappers.length === 0) {
     throw new Error('pipe requires at least one mapper')
   }
-  
+
   if (mappers.length === 1) {
     return mappers[0] as Mapper<TInput, TOutput>
   }
-  
+
   return mappers.reduce((acc, mapper) => acc.compose(mapper)) as Mapper<TInput, TOutput>
 }

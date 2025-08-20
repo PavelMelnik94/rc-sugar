@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react'
 import type { RenderProp } from '../../../shared/types'
 
-
 export interface ForProps<T = unknown> {
   /**
    * Array of items to iterate over

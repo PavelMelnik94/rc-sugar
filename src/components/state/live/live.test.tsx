@@ -64,7 +64,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="live">{isLive.toString()}</div>
             <div data-testid="value">{value ? String(value) : 'undefined'}</div>
-            <button type="button" onClick={start}>Start</button>
+            <button type="button" onClick={start}>
+              Start
+            </button>
           </div>
         )}
       </Live>
@@ -90,8 +92,12 @@ describe('live Component', () => {
         {({ isLive, start, stop }) => (
           <div>
             <div data-testid="live">{isLive.toString()}</div>
-            <button type="button" onClick={start}>Start</button>
-            <button type="button" onClick={stop}>Stop</button>
+            <button type="button" onClick={start}>
+              Start
+            </button>
+            <button type="button" onClick={stop}>
+              Stop
+            </button>
           </div>
         )}
       </Live>
@@ -125,7 +131,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="value">{value ? String(value) : 'undefined'}</div>
             <div data-testid="count">{updateCount}</div>
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+              Refresh
+            </button>
           </div>
         )}
       </Live>
@@ -152,7 +160,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="error">{error?.message || 'null'}</div>
             <div data-testid="loading">{isLoading.toString()}</div>
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+              Refresh
+            </button>
           </div>
         )}
       </Live>
@@ -179,7 +189,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="value">{String(value)}</div>
             <div data-testid="previous">{previousValue ? String(previousValue) : 'undefined'}</div>
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+              Refresh
+            </button>
           </div>
         )}
       </Live>
@@ -216,7 +228,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="timestamp">{(value as any)?.timestamp}</div>
             <div data-testid="count">{updateCount}</div>
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+              Refresh
+            </button>
           </div>
         )}
       </Live>
@@ -245,7 +259,9 @@ describe('live Component', () => {
         {({ isLive, start }) => (
           <div>
             <div data-testid="live">{isLive.toString()}</div>
-            <button type="button" onClick={start}>Start</button>
+            <button type="button" onClick={start}>
+              Start
+            </button>
           </div>
         )}
       </Live>
@@ -270,7 +286,7 @@ describe('live Component', () => {
   it('should handle loading state correctly', async () => {
     let resolvePromise: (value: string) => void
     let promiseCreated = false
-    
+
     mockSource.mockImplementation(() => {
       if (promiseCreated) {
         return Promise.resolve('loaded-value')
@@ -289,7 +305,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="loading">{isLoading.toString()}</div>
             <div data-testid="value">{value ? String(value) : 'undefined'}</div>
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+              Refresh
+            </button>
           </div>
         )}
       </Live>
@@ -326,7 +344,9 @@ describe('live Component', () => {
           <div>
             <div data-testid="live">{isLive.toString()}</div>
             <div data-testid="value">{value ? String(value) : 'undefined'}</div>
-            <button type="button" onClick={stop}>Stop</button>
+            <button type="button" onClick={stop}>
+              Stop
+            </button>
           </div>
         )}
       </Live>
@@ -344,7 +364,7 @@ describe('live Component', () => {
 
     // Stop the interval to prevent hanging
     fireEvent.click(screen.getByText('Stop'))
-    
+
     await waitFor(() => {
       expect(screen.getByTestId('live')).toHaveTextContent('false')
     })

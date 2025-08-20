@@ -9,13 +9,15 @@ interface TestData {
 const mockData: TestData = { id: 1, name: 'Test User' }
 const mockError = new Error('Failed to load')
 
-const createMockLoader = (data: TestData, delay = 0) => jest.fn().mockImplementation(
-  () => new Promise(resolve => setTimeout(() => resolve(data), delay))
-)
+const createMockLoader = (data: TestData, delay = 0) =>
+  jest
+    .fn()
+    .mockImplementation(() => new Promise((resolve) => setTimeout(() => resolve(data), delay)))
 
-const createFailingLoader = (error: Error, delay = 0) => jest.fn().mockImplementation(
-  () => new Promise((_, reject) => setTimeout(() => reject(error), delay))
-)
+const createFailingLoader = (error: Error, delay = 0) =>
+  jest
+    .fn()
+    .mockImplementation(() => new Promise((_, reject) => setTimeout(() => reject(error), delay)))
 
 describe('resource Component', () => {
   beforeEach(() => {
@@ -217,10 +219,13 @@ describe('resource Component', () => {
 
       const { rerender } = render(
         <Resource<TestData> loader={loader} deps={[userId]}>
-          {({ loading, data }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            data ? <div data-testid="data">{data.name}</div> : null
-          )}
+          {({ loading, data }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : data ? (
+              <div data-testid="data">{data.name}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -233,10 +238,13 @@ describe('resource Component', () => {
       userId = 2
       rerender(
         <Resource<TestData> loader={loader} deps={[userId]}>
-          {({ loading, data }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            data ? <div data-testid="data">{data.name}</div> : null
-          )}
+          {({ loading, data }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : data ? (
+              <div data-testid="data">{data.name}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -253,10 +261,13 @@ describe('resource Component', () => {
 
       render(
         <Resource<TestData> loader={loader} onSuccess={onSuccess}>
-          {({ loading, data }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            data ? <div data-testid="data">{data.name}</div> : null
-          )}
+          {({ loading, data }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : data ? (
+              <div data-testid="data">{data.name}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -271,10 +282,13 @@ describe('resource Component', () => {
 
       render(
         <Resource<TestData> loader={loader} onError={onError}>
-          {({ loading, error }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            error ? <div data-testid="error">{error.message}</div> : null
-          )}
+          {({ loading, error }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : error ? (
+              <div data-testid="error">{error.message}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -288,15 +302,18 @@ describe('resource Component', () => {
     it('should cancel previous request when deps change', async () => {
       const loader1 = createMockLoader({ id: 1, name: 'User 1' }, 100)
       const loader2 = createMockLoader({ id: 2, name: 'User 2' }, 50)
-      
+
       let currentLoader = loader1
 
       const { rerender } = render(
         <Resource<TestData> loader={() => currentLoader()}>
-          {({ loading, data }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            data ? <div data-testid="data">{data.name}</div> : null
-          )}
+          {({ loading, data }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : data ? (
+              <div data-testid="data">{data.name}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -305,10 +322,13 @@ describe('resource Component', () => {
       currentLoader = loader2
       rerender(
         <Resource<TestData> loader={() => currentLoader()}>
-          {({ loading, data }) => (
-            loading ? <div data-testid="loading">Loading...</div> : 
-            data ? <div data-testid="data">{data.name}</div> : null
-          )}
+          {({ loading, data }) =>
+            loading ? (
+              <div data-testid="loading">Loading...</div>
+            ) : data ? (
+              <div data-testid="data">{data.name}</div>
+            ) : null
+          }
         </Resource>
       )
 
@@ -362,7 +382,7 @@ describe('resource Component', () => {
       )
 
       expect(screen.getByTestId('error-message')).toHaveTextContent('Test error')
-      
+
       act(() => {
         screen.getByTestId('retry-button').click()
       })
@@ -373,9 +393,7 @@ describe('resource Component', () => {
     it('should render Success compound component with render prop', () => {
       render(
         <Resource.Success data={mockData}>
-          {(data) => (
-            <div data-testid="success-content">{data.name}</div>
-          )}
+          {(data) => <div data-testid="success-content">{data.name}</div>}
         </Resource.Success>
       )
 

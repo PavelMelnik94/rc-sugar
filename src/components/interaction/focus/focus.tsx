@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 import { cloneElement, isValidElement, useEffect, useRef } from 'react'
 
-
 export interface FocusProps {
   /**
    * Single child element to focus
@@ -135,6 +134,7 @@ export function Focus({
     },
   }
 
+  // eslint-disable-next-line react/no-clone-element
   return cloneElement(children, childProps)
 }
 

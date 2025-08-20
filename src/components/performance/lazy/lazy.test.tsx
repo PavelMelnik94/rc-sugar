@@ -16,21 +16,20 @@ const MockComponentWithoutProps = () => <div>Mock Component Without Props</div>
 
 // Mock dynamic imports
 function createMockLoader<T extends Record<string, unknown> = Record<string, unknown>>(
-  component: ComponentType<T>, 
+  component: ComponentType<T>,
   delay = 0
 ): () => Promise<{ default: ComponentType<T> }> {
-  return () => new Promise((resolve) => 
-    setTimeout(() => resolve({ default: component }), delay)
-  )
+  return () => new Promise((resolve) => setTimeout(() => resolve({ default: component }), delay))
 }
 
 // Mock loader that rejects
 function createMockLoaderWithError<T extends Record<string, unknown> = Record<string, unknown>>(
   delay = 0
 ): () => Promise<{ default: ComponentType<T> }> {
-  return () => new Promise((_, reject) => 
-    setTimeout(() => reject(new Error('Failed to load component')), delay)
-  )
+  return () =>
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Failed to load component')), delay)
+    )
 }
 
 describe('lazy Component', () => {
@@ -55,9 +54,9 @@ describe('lazy Component', () => {
     )
 
     expect(screen.getByText('Loading...')).toBeInTheDocument()
-    
+
     // Error boundary should catch the error and keep showing fallback
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100))
     expect(screen.getByText('Loading...')).toBeInTheDocument()
   })
 
@@ -77,7 +76,10 @@ describe('lazy Component', () => {
 
   it('should work with render prop pattern', async () => {
     render(
-      <Lazy<{ message: string }> load={createMockLoader(MockComponent)} fallback={<div>Loading...</div>}>
+      <Lazy<{ message: string }>
+        load={createMockLoader(MockComponent)}
+        fallback={<div>Loading...</div>}
+      >
         {(Component) => <Component message="render prop test" />}
       </Lazy>
     )
@@ -98,7 +100,12 @@ describe('lazy Component', () => {
   it('should pass componentProps to loaded component', async () => {
     const testProps = { message: 'component props test' }
 
-    render(<Lazy<{ message: string }> load={createMockLoader(MockComponent)} componentProps={testProps} />)
+    render(
+      <Lazy<{ message: string }>
+        load={createMockLoader(MockComponent)}
+        componentProps={testProps}
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByText(/Mock Component:.*component props test/)).toBeInTheDocument()
@@ -108,7 +115,13 @@ describe('lazy Component', () => {
   it('should handle preload option', async () => {
     const mockLoader = jest.fn(createMockLoader(MockComponent))
 
-    render(<Lazy<{ message: string }> load={mockLoader} preload={true} componentProps={{ message: 'preloaded' }} />)
+    render(
+      <Lazy<{ message: string }>
+        load={mockLoader}
+        preload={true}
+        componentProps={{ message: 'preloaded' }}
+      />
+    )
 
     // Should call the loader twice - once for preload, once for actual render
     expect(mockLoader).toHaveBeenCalledTimes(2)
@@ -121,7 +134,9 @@ describe('lazy Component', () => {
   it('should not preload by default', async () => {
     const mockLoader = jest.fn(createMockLoader(MockComponent))
 
-    render(<Lazy<{ message: string }> load={mockLoader} componentProps={{ message: 'not preloaded' }} />)
+    render(
+      <Lazy<{ message: string }> load={mockLoader} componentProps={{ message: 'not preloaded' }} />
+    )
 
     // Should only call loader once for actual render
     expect(mockLoader).toHaveBeenCalledTimes(1)
@@ -133,7 +148,9 @@ describe('lazy Component', () => {
 
   it('should handle render prop with no componentProps', async () => {
     render(
-      <Lazy<Record<string, unknown>> load={createMockLoader(MockComponentWithoutProps)}>{(Component) => <Component />}</Lazy>
+      <Lazy<Record<string, unknown>> load={createMockLoader(MockComponentWithoutProps)}>
+        {(Component) => <Component />}
+      </Lazy>
     )
 
     await waitFor(() => {
@@ -163,7 +180,12 @@ describe('lazy Component', () => {
       config: { enabled: true },
     }
 
-    render(<Lazy<{ data: string[]; config: { enabled: boolean } }> load={createMockLoader(ComplexComponent)} componentProps={complexProps} />)
+    render(
+      <Lazy<{ data: string[]; config: { enabled: boolean } }>
+        load={createMockLoader(ComplexComponent)}
+        componentProps={complexProps}
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Complex: item1, item2, item3 - enabled')).toBeInTheDocument()

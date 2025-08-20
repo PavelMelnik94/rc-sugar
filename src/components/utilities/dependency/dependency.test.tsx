@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { z } from 'zod' 
+import { z } from 'zod'
 import { createDependencyContext } from './dependency'
 
 interface TestServices {
@@ -26,7 +26,8 @@ const testServices: TestServices = {
 }
 
 // Create context for tests
-const { Provider: TestProvider, useDependency: useTestService } = createDependencyContext<TestServices>()
+const { Provider: TestProvider, useDependency: useTestService } =
+  createDependencyContext<TestServices>()
 
 // Test components
 function TestComponent(): React.ReactElement {
@@ -41,14 +42,14 @@ function TestComponent(): React.ReactElement {
   )
 }
 
-
-
 describe('simple dependency injection', () => {
   describe('createDependencyContext', () => {
     it('should create Provider and useDependency hook', () => {
-      const { Provider, useDependency, createTestProvider } = createDependencyContext<TestServices>({
-        contextName: 'Test'
-      })
+      const { Provider, useDependency, createTestProvider } = createDependencyContext<TestServices>(
+        {
+          contextName: 'Test',
+        }
+      )
 
       expect(Provider).toBeDefined()
       expect(useDependency).toBeDefined()
@@ -106,7 +107,7 @@ describe('simple dependency injection', () => {
     })
 
     it('should throw error when used outside provider', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { })
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
       expect(() => {
         render(<TestComponent />)
@@ -116,7 +117,7 @@ describe('simple dependency injection', () => {
     })
 
     it('should throw error for non-existent dependency', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { })
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
       const TestComponentWithError = () => {
         const nonExistent = useTestService('nonExistent' as keyof TestServices)
@@ -138,7 +139,7 @@ describe('simple dependency injection', () => {
   describe('createTestProvider utility', () => {
     it('should work with createTestProvider utility', () => {
       const { useDependency, createTestProvider } = createDependencyContext<TestServices>({
-        contextName: 'Test'
+        contextName: 'Test',
       })
 
       const TestComponent = () => {
@@ -147,7 +148,7 @@ describe('simple dependency injection', () => {
       }
 
       const TestProvider = createTestProvider({
-        apiService: { name: 'MockAPI', getData: async () => 'mock-data' }
+        apiService: { name: 'MockAPI', getData: async () => 'mock-data' },
       })
 
       render(
@@ -161,7 +162,7 @@ describe('simple dependency injection', () => {
 
     it('should have correct displayName for Provider', () => {
       const { Provider: TestProvider } = createDependencyContext<TestServices>({
-        contextName: 'Test'
+        contextName: 'Test',
       })
 
       expect(TestProvider.displayName).toBe('TestProvider')
@@ -172,10 +173,10 @@ describe('simple dependency injection', () => {
 
       const { Provider: ValidationProvider } = createDependencyContext<TestServices>({
         schema: testSchema,
-        contextName: 'ValidationTest'
+        contextName: 'ValidationTest',
       })
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { })
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
       const TestComponent = () => {
         return <div>Test</div>
@@ -210,10 +211,11 @@ describe('simple dependency injection', () => {
         cache: { get: (key: string) => string }
       }
 
-      const { Provider: OtherProvider, useDependency: useOtherService } = createDependencyContext<OtherServices>()
+      const { Provider: OtherProvider, useDependency: useOtherService } =
+        createDependencyContext<OtherServices>()
 
       const otherServices: OtherServices = {
-        cache: { get: (key: string) => `cached-${key}` }
+        cache: { get: (key: string) => `cached-${key}` },
       }
 
       function MultiContextComponent(): React.ReactElement {
@@ -240,5 +242,4 @@ describe('simple dependency injection', () => {
       expect(screen.getByTestId('multi-cache')).toHaveTextContent('cached-test')
     })
   })
-
 })

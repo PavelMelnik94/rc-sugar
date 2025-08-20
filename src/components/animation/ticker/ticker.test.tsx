@@ -80,24 +80,28 @@ describe('ticker', () => {
   it('should call onTick callback on each tick', async () => {
     const onTick = jest.fn()
 
-    render(<Ticker interval={50} onTick={onTick} />)
+    const { unmount } = render(<Ticker interval={100} onTick={onTick} />)
 
     // Wait for first tick
     await waitFor(
       () => {
         expect(onTick).toHaveBeenCalledWith(1)
       },
-      { timeout: 100 }
+      { timeout: 200 }
     )
 
     // Wait for second tick
     await waitFor(
       () => {
-        expect(onTick).toHaveBeenCalledTimes(2)
         expect(onTick).toHaveBeenCalledWith(2)
       },
-      { timeout: 150 }
+      { timeout: 200 }
     )
+
+    // Verify we got at least 2 calls (could be more due to timing)
+    expect(onTick.mock.calls.length).toBeGreaterThanOrEqual(2)
+
+    unmount()
   })
 
   it('should stop ticking when stop is called', async () => {

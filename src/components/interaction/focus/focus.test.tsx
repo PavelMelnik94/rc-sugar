@@ -26,11 +26,14 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus>
-        <input data-testid="input" ref={(el) => {
-          if (el) {
-            el.focus = mockFocus
-          }
-        }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) {
+              el.focus = mockFocus
+            }
+          }}
+        />
       </Focus>
     )
 
@@ -46,11 +49,14 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus delay={500}>
-        <input data-testid="input" ref={(el) => {
-          if (el) {
-            el.focus = mockFocus
-          }
-        }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) {
+              el.focus = mockFocus
+            }
+          }}
+        />
       </Focus>
     )
 
@@ -71,11 +77,14 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus onFocus={mockOnFocus}>
-        <input data-testid="input" ref={(el) => {
-          if (el) {
-            el.focus = mockFocus
-          }
-        }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) {
+              el.focus = mockFocus
+            }
+          }}
+        />
       </Focus>
     )
 
@@ -117,7 +126,12 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus preventScroll>
-        <input data-testid="input" ref={(el) => { if (el) el.focus = mockFocus }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        />
       </Focus>
     )
 
@@ -141,7 +155,9 @@ describe('focus Component', () => {
   it('should handle button elements', () => {
     render(
       <Focus>
-        <button type="button" data-testid="button">Click me</button>
+        <button type="button" data-testid="button">
+          Click me
+        </button>
       </Focus>
     )
 
@@ -153,7 +169,12 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus={false}>
-        <input data-testid="input" ref={(el) => { if (el) el.focus = mockFocus }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        />
       </Focus>
     )
 
@@ -222,7 +243,13 @@ describe('focus Component', () => {
 
     render(
       <Focus autoFocus selectText>
-        <button type="button" data-testid="button" ref={(el) => { if (el) el.focus = mockFocus }}>
+        <button
+          type="button"
+          data-testid="button"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        >
           Button without select
         </button>
       </Focus>
@@ -298,7 +325,9 @@ describe('focus Component', () => {
 
     render(
       <Focus whenVisible>
-        <button type="button" data-testid="button">Focus when visible</button>
+        <button type="button" data-testid="button">
+          Focus when visible
+        </button>
       </Focus>
     )
 
@@ -321,13 +350,18 @@ describe('focus Component', () => {
         disconnect: mockDisconnect,
       }
     })
-      ; (globalThis as any).IntersectionObserver = IntersectionObserverMock
+    ;(globalThis as any).IntersectionObserver = IntersectionObserverMock
 
     const mockFocus = jest.fn()
 
     render(
       <Focus autoFocus whenVisible>
-        <input data-testid="input" ref={(el) => { if (el) el.focus = mockFocus }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        />
       </Focus>
     )
 
@@ -352,13 +386,18 @@ describe('focus Component', () => {
         disconnect: mockDisconnect,
       }
     })
-      ; (globalThis as any).IntersectionObserver = IntersectionObserverMock
+    ;(globalThis as any).IntersectionObserver = IntersectionObserverMock
 
     const mockFocus = jest.fn()
 
     render(
       <Focus autoFocus whenVisible delay={100}>
-        <input data-testid="input" ref={(el) => { if (el) el.focus = mockFocus }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        />
       </Focus>
     )
 
@@ -391,13 +430,18 @@ describe('focus Component', () => {
         disconnect: mockDisconnect,
       }
     })
-      ; (globalThis as any).IntersectionObserver = IntersectionObserverMock
+    ;(globalThis as any).IntersectionObserver = IntersectionObserverMock
 
     const mockFocus = jest.fn()
 
     render(
       <Focus autoFocus whenVisible>
-        <input data-testid="input" ref={(el) => { if (el) el.focus = mockFocus }} />
+        <input
+          data-testid="input"
+          ref={(el) => {
+            if (el) el.focus = mockFocus
+          }}
+        />
       </Focus>
     )
 
@@ -418,7 +462,13 @@ describe('focus Component', () => {
     const existingRef = { current: null as HTMLInputElement | null }
     const mockFocus = jest.fn()
 
-    const InputWithRef = ({ ref, ...props }: { ref?: React.Ref<HTMLInputElement>; [key: string]: any }) => (
+    const InputWithRef = ({
+      ref,
+      ...props
+    }: {
+      ref?: React.Ref<HTMLInputElement>
+      [key: string]: any
+    }) => (
       <input
         {...props}
         data-testid="input"
@@ -427,7 +477,7 @@ describe('focus Component', () => {
             if (typeof ref === 'function') {
               ref(el)
             } else {
-              ; (ref as any).current = el
+              ;(ref as any).current = el
             }
           }
           if (el) el.focus = mockFocus

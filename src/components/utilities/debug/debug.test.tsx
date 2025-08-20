@@ -163,7 +163,7 @@ describe('debug Component', () => {
 
   it('should handle function children', () => {
     const FunctionChild = () => <div data-testid="function-child">Function result</div>
-    
+
     render(
       <Debug>
         <FunctionChild />

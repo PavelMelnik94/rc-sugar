@@ -23,7 +23,6 @@ export interface AtomState<T = unknown> {
   subscribe: (callback: (value: T) => void) => () => void
 }
 
-
 export function AtomProvider({ children }: { children: ReactNode }): React.ReactElement {
   const updateAtom = useCallback((key: string, value: unknown) => {
     const atom = atomStore.get(key)
@@ -39,7 +38,7 @@ export function AtomProvider({ children }: { children: ReactNode }): React.React
       atom.subscribers.add(callback)
       return () => atom.subscribers.delete(callback)
     }
-    return () => { }
+    return () => {}
   }, [])
 
   const contextValue = useMemo(

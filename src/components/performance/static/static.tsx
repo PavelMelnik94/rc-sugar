@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react'
 import { memo, useMemo } from 'react'
 
-
 export interface StaticProps {
   /**
    * Children to render statically
@@ -45,10 +44,11 @@ export function Static({ children, deps }: StaticProps): ReactElement {
     () => {
       return memo(({ children }: { children: ReactNode }) => <>{children}</>)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps ?? []
   )
 
-  if (deps !== undefined) { 
+  if (deps !== undefined) {
     return <MemoizedComponent children={children} />
   }
 

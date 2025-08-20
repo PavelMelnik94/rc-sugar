@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { Bound } from './bound'
 
-
 describe('bound Component', () => {
   it('should render value within bounds unchanged', () => {
     render(

@@ -150,10 +150,12 @@ const calculateVelocity = (
     return { x: 0, y: 0, magnitude: 0, timestamp }
   }
 
-  const deltaTime = timestamp - ((previous as ScrollPosition & { timestamp?: number }).timestamp || Date.now()) || 16
+  const deltaTime =
+    timestamp - ((previous as ScrollPosition & { timestamp?: number }).timestamp || Date.now()) ||
+    16
   const deltaX = current.x - previous.x
   const deltaY = current.y - previous.y
-  
+
   const x = deltaX / deltaTime
   const y = deltaY / deltaTime
   const magnitude = Math.sqrt(x * x + y * y)
@@ -161,12 +163,9 @@ const calculateVelocity = (
   return { x, y, magnitude, timestamp }
 }
 
-const calculateBoundaries = (
-  dimensions: ScrollDimensions,
-  threshold: number
-): ScrollBoundaries => {
+const calculateBoundaries = (dimensions: ScrollDimensions, threshold: number): ScrollBoundaries => {
   const { scrollLeft, scrollTop, scrollWidth, scrollHeight, clientWidth, clientHeight } = dimensions
-  
+
   const maxScrollLeft = scrollWidth - clientWidth
   const maxScrollTop = scrollHeight - clientHeight
 
@@ -182,9 +181,11 @@ const calculateBoundaries = (
   }
 }
 
-const calculateProgress = (dimensions: ScrollDimensions): { vertical: number; horizontal: number } => {
+const calculateProgress = (
+  dimensions: ScrollDimensions
+): { vertical: number; horizontal: number } => {
   const { scrollLeft, scrollTop, scrollWidth, scrollHeight, clientWidth, clientHeight } = dimensions
-  
+
   const maxScrollLeft = Math.max(0, scrollWidth - clientWidth)
   const maxScrollTop = Math.max(0, scrollHeight - clientHeight)
 
@@ -218,7 +219,7 @@ export function Scroll({
   const isScrollingRef = useRef(false)
   const rafIdRef = useRef<number | null>(null)
   const scrollStateRef = useRef<ScrollState>({} as ScrollState)
-  
+
   const [scrollState, setScrollState] = useState<ScrollState>(() => {
     const initialElement = getScrollElement(element)
     const dimensions = getScrollDimensions(initialElement)
@@ -228,7 +229,7 @@ export function Scroll({
       left: dimensions.scrollLeft,
       top: dimensions.scrollTop,
     }
-    
+
     const initialState: ScrollState = {
       position,
       dimensions,
@@ -242,7 +243,7 @@ export function Scroll({
       boundaries: calculateBoundaries(dimensions, threshold),
       progress: calculateProgress(dimensions),
     }
-    
+
     return initialState
   })
 
@@ -290,10 +291,10 @@ export function Scroll({
     onScroll?.(newState)
 
     if (trackDirection && previousDirectionRef.current) {
-      const directionChanged = 
+      const directionChanged =
         direction.horizontal !== previousDirectionRef.current.horizontal ||
         direction.vertical !== previousDirectionRef.current.vertical
-      
+
       if (directionChanged) {
         onDirectionChange?.(direction)
       }
@@ -313,7 +314,19 @@ export function Scroll({
 
     previousPositionRef.current = position
     previousDirectionRef.current = direction
-  }, [trackDirection, trackVelocity, trackBoundaries, threshold, onScroll, onDirectionChange, onReachTop, onReachBottom, onReachLeft, onReachRight, onScrollStart])
+  }, [
+    trackDirection,
+    trackVelocity,
+    trackBoundaries,
+    threshold,
+    onScroll,
+    onDirectionChange,
+    onReachTop,
+    onReachBottom,
+    onReachLeft,
+    onReachRight,
+    onScrollStart,
+  ])
 
   const throttledUpdateScrollState = useCallback(
     () => throttle(() => updateScrollState(), throttleMs)(),
@@ -334,7 +347,7 @@ export function Scroll({
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current)
     }
-    
+
     rafIdRef.current = requestAnimationFrame(() => {
       throttledUpdateScrollState()
       debouncedScrollEnd()
@@ -345,68 +358,68 @@ export function Scroll({
     scrollTo: useCallback((options: ScrollToOptions) => {
       const scrollElement = scrollElementRef.current
       if (!scrollElement) return
-      
+
       if (scrollElement === window) {
         window.scrollTo(options)
       } else {
-        (scrollElement as HTMLElement).scrollTo(options)
+        ;(scrollElement as HTMLElement).scrollTo(options)
       }
     }, []),
 
     scrollToTop: useCallback((behavior: ScrollBehavior = 'smooth') => {
       const scrollElement = scrollElementRef.current
       if (!scrollElement) return
-      
+
       if (scrollElement === window) {
         window.scrollTo({ top: 0, behavior })
       } else {
-        (scrollElement as HTMLElement).scrollTo({ top: 0, behavior })
+        ;(scrollElement as HTMLElement).scrollTo({ top: 0, behavior })
       }
     }, []),
 
     scrollToBottom: useCallback((behavior: ScrollBehavior = 'smooth') => {
       const scrollElement = scrollElementRef.current
       if (!scrollElement) return
-      
+
       const dimensions = getScrollDimensions(scrollElement)
       const maxScrollTop = dimensions.scrollHeight - dimensions.clientHeight
-      
+
       if (scrollElement === window) {
         window.scrollTo({ top: maxScrollTop, behavior })
       } else {
-        (scrollElement as HTMLElement).scrollTo({ top: maxScrollTop, behavior })
+        ;(scrollElement as HTMLElement).scrollTo({ top: maxScrollTop, behavior })
       }
     }, []),
 
     scrollToLeft: useCallback((behavior: ScrollBehavior = 'smooth') => {
       const scrollElement = scrollElementRef.current
       if (!scrollElement) return
-      
+
       if (scrollElement === window) {
         window.scrollTo({ left: 0, behavior })
       } else {
-        (scrollElement as HTMLElement).scrollTo({ left: 0, behavior })
+        ;(scrollElement as HTMLElement).scrollTo({ left: 0, behavior })
       }
     }, []),
 
     scrollToRight: useCallback((behavior: ScrollBehavior = 'smooth') => {
       const scrollElement = scrollElementRef.current
       if (!scrollElement) return
-      
+
       const dimensions = getScrollDimensions(scrollElement)
       const maxScrollLeft = dimensions.scrollWidth - dimensions.clientWidth
-      
+
       if (scrollElement === window) {
         window.scrollTo({ left: maxScrollLeft, behavior })
       } else {
-        (scrollElement as HTMLElement).scrollTo({ left: maxScrollLeft, behavior })
+        ;(scrollElement as HTMLElement).scrollTo({ left: maxScrollLeft, behavior })
       }
     }, []),
 
     isElementInView: useCallback((element: Element) => {
       const rect = element.getBoundingClientRect()
       const scrollElement = scrollElementRef.current
-      
+
       if (scrollElement === window) {
         return (
           rect.top >= 0 &&
@@ -415,7 +428,7 @@ export function Scroll({
           rect.right <= window.innerWidth
         )
       }
-      
+
       const containerRect = (scrollElement as HTMLElement).getBoundingClientRect()
       return (
         rect.top >= containerRect.top &&
@@ -433,9 +446,9 @@ export function Scroll({
   useEffect(() => {
     const scrollElement = getScrollElement(element)
     scrollElementRef.current = scrollElement
-    
+
     scrollElement.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     return () => {
       scrollElement.removeEventListener('scroll', handleScroll)
       if (rafIdRef.current) {
@@ -443,8 +456,6 @@ export function Scroll({
       }
     }
   }, [element, handleScroll])
-
-
 
   return children(scrollState, scrollUtils)
 }

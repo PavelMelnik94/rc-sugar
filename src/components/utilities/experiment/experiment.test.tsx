@@ -146,11 +146,7 @@ describe('experiment', () => {
           {
             name: 'A',
             weight: 100,
-            content: (variant) => (
-              <div data-testid="variant-render">
-                Rendered {variant}
-              </div>
-            ),
+            content: (variant) => <div data-testid="variant-render">Rendered {variant}</div>,
           },
         ]}
       />
@@ -164,7 +160,7 @@ describe('experiment', () => {
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
       expect.any(Error)
@@ -181,7 +177,7 @@ describe('experiment', () => {
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
       expect.objectContaining({ message: 'Duplicate variant name: A' })
@@ -190,13 +186,11 @@ describe('experiment', () => {
   })
 
   it('should handle invalid variant names', () => {
-    const variants: ExperimentVariant[] = [
-      { name: '', weight: 1, content: <div>Empty name</div> },
-    ]
+    const variants: ExperimentVariant[] = [{ name: '', weight: 1, content: <div>Empty name</div> }]
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
       expect.objectContaining({ message: 'Each variant must have a valid name' })
@@ -211,10 +205,12 @@ describe('experiment', () => {
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
-      expect.objectContaining({ message: 'Invalid weight for variant A: must be a non-negative number' })
+      expect.objectContaining({
+        message: 'Invalid weight for variant A: must be a non-negative number',
+      })
     )
     expect(onVariantSelected).not.toHaveBeenCalled()
   })
@@ -227,7 +223,7 @@ describe('experiment', () => {
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
       expect.objectContaining({ message: 'Total weight of all variants must be greater than 0' })
@@ -244,9 +240,23 @@ describe('experiment', () => {
     const onVariantSelected2 = jest.fn()
 
     // Same seed but different experiment IDs should potentially give different results
-    render(<Experiment id="experiment1" variants={variants} seed={123} onVariantSelected={onVariantSelected1} />)
-    render(<Experiment id="experiment2" variants={variants} seed={123} onVariantSelected={onVariantSelected2} />)
-    
+    render(
+      <Experiment
+        id="experiment1"
+        variants={variants}
+        seed={123}
+        onVariantSelected={onVariantSelected1}
+      />
+    )
+    render(
+      <Experiment
+        id="experiment2"
+        variants={variants}
+        seed={123}
+        onVariantSelected={onVariantSelected2}
+      />
+    )
+
     expect(onVariantSelected1).toHaveBeenCalledWith(expect.any(String))
     expect(onVariantSelected2).toHaveBeenCalledWith(expect.any(String))
   })
@@ -258,7 +268,7 @@ describe('experiment', () => {
     const onVariantSelected = jest.fn()
 
     render(<Experiment id="test" variants={variants} onVariantSelected={onVariantSelected} />)
-    
+
     expect(mockConsoleError).toHaveBeenCalledWith(
       'Experiment "test" validation failed:',
       expect.objectContaining({ message: 'Total weight of all variants must be greater than 0' })

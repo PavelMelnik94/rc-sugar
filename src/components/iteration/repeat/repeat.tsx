@@ -1,6 +1,5 @@
 import type { RenderProp } from '../../../shared/types'
 
-
 export interface RepeatProps {
   /**
    * Number of times to repeat the content

@@ -1,7 +1,6 @@
 import type { FC, ReactNode } from 'react'
 import { useMemo } from 'react'
 
-
 export interface CacheProps {
   /**
    * Children to cache
@@ -41,7 +40,7 @@ export const Cache: FC<CacheProps> = ({ children, deps, cacheKey, debug = false 
       console.log(`🔄 Cache ${cacheKey ? `"${cacheKey}"` : ''} recalculating`, deps)
     }
     return children
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps])
 
   if (debug) {

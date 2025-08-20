@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 import { cloneElement, isValidElement } from 'react'
 
-
 export interface MirrorProps extends Record<string, unknown> {
   /**
    * The React element to clone

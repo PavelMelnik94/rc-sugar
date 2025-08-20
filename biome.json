@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
   "files": {
-    "includes": [ "src/**/*", "scripts/**/*", "packages/**/*", "*.ts", "*.js", "*.json" ]
+    "includes": ["src/**/*", "scripts/**/*", "packages/**/*", "*.ts", "*.js", "*.json"]
   },
   "linter": {
     "enabled": true,
@@ -21,14 +21,7 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [
-              "builtin",
-              "external",
-              "internal",
-              "parent",
-              "sibling",
-              "index"
-            ]
+            "groups": ["builtin", "external", "internal", "parent", "sibling", "index"]
           }
         }
       }

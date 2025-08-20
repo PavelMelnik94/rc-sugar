@@ -5,11 +5,11 @@ export {
   createMapper,
   createNormalizerMapper,
   identity,
-  pipe
+  pipe,
 } from './mapper'
 
 export type {
   ConditionalMapper,
   Mapper,
-  MapperConfig
+  MapperConfig,
 } from './mapper'

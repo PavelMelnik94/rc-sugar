@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
-
 export type RouteParams = Record<string, string>
-
 
 export interface MicroRouteProps {
   /**
@@ -26,11 +24,9 @@ export interface MicroRouteProps {
   exact?: boolean
 }
 
-
 export interface NotFoundProps {
   children: ReactNode
 }
-
 
 function parsePattern(pattern: string): {
   regex: RegExp
@@ -55,7 +51,6 @@ function parsePattern(pattern: string): {
   }
 }
 
-
 function extractParams(path: string, pattern: string): RouteParams | null {
   const { regex, paramNames } = parsePattern(pattern)
   const match = path.match(regex)
@@ -71,7 +66,6 @@ function extractParams(path: string, pattern: string): RouteParams | null {
 
   return params
 }
-
 
 export function NotFound({ children }: NotFoundProps): ReactNode {
   return <>{children}</>

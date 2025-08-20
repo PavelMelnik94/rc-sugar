@@ -3,7 +3,6 @@ import type { VoidEventHandler } from '../../../shared/types'
 import process from 'node:process'
 import { useEffect, useRef } from 'react'
 
-
 export interface TapProps {
   /**
    * Children to render

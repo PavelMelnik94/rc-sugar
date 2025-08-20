@@ -8,19 +8,11 @@ export default antfu(
     test: true,
     markdown: false,
 
-
     // BIOME OVERRIDES
     stylistic: false,
     formatters: false,
     gitignore: true,
-    ignores: [
-      'dist',
-      'node_modules',
-      'coverage',
-      'build',
-      'public',
-      'out',
-      '*.md'],
+    ignores: ['dist', 'node_modules', 'coverage', 'build', 'public', 'out', '*.md'],
 
     rules: {
       'no-console': 'off',
@@ -36,10 +28,8 @@ export default antfu(
 
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
-    // BIOME OVERRIDES END
-
+      // BIOME OVERRIDES END
     },
-
   },
   {
     // Настройки для тестовых файлов

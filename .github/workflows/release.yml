@@ -1,3 +1,4 @@
+---
 name: Release and Publish
 
 on:
@@ -8,6 +9,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   issues: write
@@ -17,13 +22,17 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: npm
 
       - name: Install dependencies
@@ -34,6 +43,12 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Format check (biome - informational only)
+        run: >
+          npm run format:check ||
+          echo "⚠️ Biome format check failed - this is informational only"
+        continue-on-error: true
 
       - name: Test
         run: npm test
@@ -69,12 +84,42 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Check if version changed
+        id: version-check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if git tag --list | grep -q "^v${CURRENT_VERSION}$"; then
+            echo "Version $CURRENT_VERSION already tagged"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "New version $CURRENT_VERSION detected"
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Git Tag
+        if: steps.version-check.outputs.should_publish == 'true'
+        run: |
+          git tag v${{ steps.version-check.outputs.version }}
+          git push origin v${{ steps.version-check.outputs.version }}
+
+      - name: Create GitHub Release
+        if: steps.version-check.outputs.should_publish == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version-check.outputs.version }}
+          name: Release v${{ steps.version-check.outputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+
       - name: Publish to npm
+        if: steps.version-check.outputs.should_publish == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ -z "$NODE_AUTH_TOKEN" ]; then
             echo "NPM_TOKEN not found, skipping publish"
           else
-            npm publish || echo "Publish skipped - version already exists or no changes"
+            npm publish || echo "Publish failed or version already exists"
           fi

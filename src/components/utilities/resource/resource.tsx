@@ -1,6 +1,6 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react'
 import type { RenderProp } from '../../../shared/types'
-import {  useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface ResourceState<T, E = Error> {
   data: T | null
@@ -44,7 +44,7 @@ export interface ResourceProps<T, E = Error> {
  * </Resource>
  *
  * // With dependencies
- * <Resource 
+ * <Resource
  *   loader={() => fetchUserPosts(userId)}
  *   deps={[userId]}
  * >
@@ -61,7 +61,7 @@ export function Resource<T, E = Error>({
   deps = [],
   onError,
   onSuccess,
-  children
+  children,
 }: ResourceProps<T, E>): ReactNode {
   const [data, setData] = useState<T | null>(initialData ?? null)
   const [error, setError] = useState<E | null>(null)
@@ -82,7 +82,7 @@ export function Resource<T, E = Error>({
 
     try {
       const result = await loader()
-      
+
       if (controller.signal.aborted || !mountedRef.current) {
         return
       }
@@ -112,6 +112,7 @@ export function Resource<T, E = Error>({
     if (immediate) {
       loadResource()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadResource, immediate, ...deps])
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export function Resource<T, E = Error>({
     data,
     error,
     loading,
-    refetch
+    refetch,
   }
 
   return children(resourceState)
@@ -136,31 +137,25 @@ Resource.Loading = function Loading({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
 
-Resource.Error = function Error<E>({ 
+Resource.Error = function Error<E>({
   error,
   onRetry,
-  children 
-}: { 
+  children,
+}: {
   error: E
   onRetry?: () => void
   children?: RenderProp<{ error: E; retry: () => void }>
 }) {
   const retry = onRetry || (() => {})
-  
+
   if (typeof children === 'function') {
     return children({ error, retry })
   }
-  
+
   return <>{children}</>
 }
 
-Resource.Success = function Success<T>({ 
-  data,
-  children 
-}: { 
-  data: T
-  children: RenderProp<T>
-}) {
+Resource.Success = function Success<T>({ data, children }: { data: T; children: RenderProp<T> }) {
   return children(data)
 }
 

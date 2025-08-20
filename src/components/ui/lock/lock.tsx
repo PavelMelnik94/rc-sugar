@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 
-
 export interface LockProps {
   /**
    * Children to lock/unlock
@@ -33,7 +32,7 @@ export interface LockProps {
   overlayClassName?: string
 }
 
-const defaultOverlayStyleProp: React.CSSProperties = {};
+const defaultOverlayStyleProp: React.CSSProperties = {}
 
 /**
  * Lock component - disables interaction and optionally shows overlay
