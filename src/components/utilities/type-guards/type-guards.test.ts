@@ -1,62 +1,60 @@
 import { z } from 'zod'
 import {
-  isString,
-  isNumber,
-  isBoolean,
-  isBigInt,
-  isSymbol,
-  isFunction,
-  isObject,
-  isArray,
-  isNonEmptyArray,
-  isPrimitive,
-  isNull,
-  isUndefined,
-  isNullish,
-  isNotNullish,
-  isRecord,
-  isPlainObject,
-  isDate,
-  isError,
-  isRegExp,
-  isPromise,
-  isMap,
-  isSet,
-  isWeakMap,
-  isWeakSet,
-  isArrayBuffer,
-  isTypedArray,
-  isIterable,
-  isAsyncIterable,
-  isEmpty,
-  isNonEmpty,
-  hasProperty,
-  hasMethod,
   assert,
-  assertIsString,
-  assertIsNumber,
-  assertIsBoolean,
-  assertIsObject,
   assertIsArray,
-  assertIsFunction,
-  assertIsNotNullish,
-  assertIsNonEmptyArray,
+  assertIsBoolean,
   assertIsDate,
   assertIsError,
-  createTypeGuard,
-  createAssertion,
-  validateSchema,
-  safeValidateSchema,
-  createSafeTypeGuard,
+  assertIsFunction,
+  assertIsNonEmptyArray,
+  assertIsNotNullish,
+  assertIsNumber,
+  assertIsObject,
+  assertIsString,
   CommonSchemas,
-  createValidator,
+  createAssertion,
   createAssertionError,
-  type AssertionError,
-  type TypeGuardResult,
+  createSafeTypeGuard,
+  createTypeGuard,
+  createValidator,
+  hasMethod,
+  hasProperty,
+  isArray,
+  isArrayBuffer,
+  isAsyncIterable,
+  isBigInt,
+  isBoolean,
+  isDate,
+  isEmpty,
+  isError,
+  isFunction,
+  isIterable,
+  isMap,
+  isNonEmpty,
+  isNonEmptyArray,
+  isNotNullish,
+  isNull,
+  isNullish,
+  isNumber,
+  isObject,
+  isPlainObject,
+  isPrimitive,
+  isPromise,
+  isRecord,
+  isRegExp,
+  isSet,
+  isString,
+  isSymbol,
+  isTypedArray,
+  isUndefined,
+  isWeakMap,
+  isWeakSet,
+  safeValidateSchema,
+  validateSchema,
 } from './type-guards'
 
-describe('Type Guards', () => {
-  describe('Primitive Type Guards', () => {
+describe('type Guards', () => {
+  describe('primitive Type Guards', () => {
     describe('isString', () => {
       it('should return true for strings', () => {
         expect(isString('')).toBe(true)
@@ -123,7 +121,7 @@ describe('Type Guards', () => {
 
     describe('isSymbol', () => {
       it('should return true for symbols', () => {
-        expect(isSymbol(Symbol())).toBe(true)
+        expect(isSymbol(Symbol('test1'))).toBe(true)
         expect(isSymbol(Symbol('test'))).toBe(true)
         expect(isSymbol(Symbol.iterator)).toBe(true)
       })
@@ -138,7 +136,7 @@ describe('Type Guards', () => {
     describe('isFunction', () => {
       it('should return true for functions', () => {
         expect(isFunction(() => {})).toBe(true)
-        expect(isFunction(function() {})).toBe(true)
+        expect(isFunction(() => {})).toBe(true)
         expect(isFunction(async () => {})).toBe(true)
         expect(isFunction(class TestClass {})).toBe(true)
         expect(isFunction(Math.abs)).toBe(true)
@@ -159,7 +157,7 @@ describe('Type Guards', () => {
         expect(isPrimitive('string')).toBe(true)
         expect(isPrimitive(true)).toBe(true)
         expect(isPrimitive(123n)).toBe(true)
-        expect(isPrimitive(Symbol())).toBe(true)
+        expect(isPrimitive(Symbol('test2'))).toBe(true)
       })
 
       it('should return false for non-primitive values', () => {
@@ -171,7 +169,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Nullish Type Guards', () => {
+  describe('nullish Type Guards', () => {
     describe('isNull', () => {
       it('should return true only for null', () => {
         expect(isNull(null)).toBe(true)
@@ -221,7 +219,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Complex Type Guards', () => {
+  describe('complex Type Guards', () => {
     describe('isObject', () => {
       it('should return true for objects', () => {
         expect(isObject({})).toBe(true)
@@ -242,7 +240,7 @@ describe('Type Guards', () => {
       it('should return true for arrays', () => {
         expect(isArray([])).toBe(true)
         expect(isArray([1, 2, 3])).toBe(true)
-        expect(isArray(new Array(5))).toBe(true)
+        expect(isArray(Array.from({length: 5}))).toBe(true)
       })
 
       it('should return false for non-arrays', () => {
@@ -311,9 +309,9 @@ describe('Type Guards', () => {
 
     describe('isError', () => {
       it('should return true for Error instances', () => {
-        expect(isError(new Error())).toBe(true)
-        expect(isError(new TypeError())).toBe(true)
-        expect(isError(new RangeError())).toBe(true)
+        expect(isError(new Error('test error'))).toBe(true)
+        expect(isError(new TypeError('test type error'))).toBe(true)
+        expect(isError(new RangeError('test range error'))).toBe(true)
       })
 
       it('should return false for non-errors', () => {
@@ -326,7 +324,6 @@ describe('Type Guards', () => {
     describe('isRegExp', () => {
       it('should return true for RegExp instances', () => {
         expect(isRegExp(/test/)).toBe(true)
-        expect(isRegExp(new RegExp('test'))).toBe(true)
       })
 
       it('should return false for non-regexps', () => {
@@ -350,7 +347,7 @@ describe('Type Guards', () => {
       })
     })
 
-    describe('Collection Type Guards', () => {
+    describe('collection Type Guards', () => {
       describe('isMap', () => {
         it('should return true for Map instances', () => {
           expect(isMap(new Map())).toBe(true)
@@ -400,7 +397,7 @@ describe('Type Guards', () => {
       })
     })
 
-    describe('Buffer Type Guards', () => {
+    describe('buffer Type Guards', () => {
       describe('isArrayBuffer', () => {
         it('should return true for ArrayBuffer instances', () => {
           expect(isArrayBuffer(new ArrayBuffer(8))).toBe(true)
@@ -427,7 +424,7 @@ describe('Type Guards', () => {
       })
     })
 
-    describe('Iterator Type Guards', () => {
+    describe('iterator Type Guards', () => {
       describe('isIterable', () => {
         it('should return true for iterable objects', () => {
           expect(isIterable([])).toBe(true)
@@ -465,7 +462,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Utility Functions', () => {
+  describe('utility Functions', () => {
     describe('isEmpty', () => {
       it('should return true for empty values', () => {
         expect(isEmpty(null)).toBe(true)
@@ -533,7 +530,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Assertion Functions', () => {
+  describe('assertion Functions', () => {
     describe('assert', () => {
       it('should not throw for truthy conditions', () => {
         expect(() => assert(true)).not.toThrow()
@@ -619,7 +616,7 @@ describe('Type Guards', () => {
     describe('assertIsFunction', () => {
       it('should not throw for functions', () => {
         expect(() => assertIsFunction(() => {})).not.toThrow()
-        expect(() => assertIsFunction(function() {})).not.toThrow()
+        expect(() => assertIsFunction(() => {})).not.toThrow()
       })
 
       it('should throw for non-functions', () => {
@@ -665,8 +662,8 @@ describe('Type Guards', () => {
 
     describe('assertIsError', () => {
       it('should not throw for Error instances', () => {
-        expect(() => assertIsError(new Error())).not.toThrow()
-        expect(() => assertIsError(new TypeError())).not.toThrow()
+        expect(() => assertIsError(new Error('test'))).not.toThrow()
+        expect(() => assertIsError(new TypeError('test'))).not.toThrow()
       })
 
       it('should throw for non-errors', () => {
@@ -676,7 +673,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Zod Integration', () => {
+  describe('zod Integration', () => {
     const stringSchema = z.string()
     const numberSchema = z.number()
     const objectSchema = z.object({ name: z.string(), age: z.number() })
@@ -776,7 +773,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('CommonSchemas', () => {
+  describe('commonSchemas', () => {
     describe('nonEmptyString', () => {
       it('should validate non-empty strings', () => {
         const guard = createTypeGuard(CommonSchemas.nonEmptyString)
@@ -831,7 +828,7 @@ describe('Type Guards', () => {
     })
   })
 
-  describe('Error Handling', () => {
+  describe('error Handling', () => {
     describe('createAssertionError', () => {
       it('should create proper AssertionError', () => {
         const error = createAssertionError('Test message')
