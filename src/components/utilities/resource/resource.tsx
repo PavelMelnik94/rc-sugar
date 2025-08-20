@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import type {ReactNode} from 'react';
 import type { RenderProp } from '../../../shared/types'
+import {  useCallback, useEffect, useRef, useState } from 'react'
 
 export interface ResourceState<T, E = Error> {
   data: T | null
@@ -62,7 +62,7 @@ export function Resource<T, E = Error>({
   onError,
   onSuccess,
   children
-}: ResourceProps<T, E>) {
+}: ResourceProps<T, E>): ReactNode {
   const [data, setData] = useState<T | null>(initialData ?? null)
   const [error, setError] = useState<E | null>(null)
   const [loading, setLoading] = useState(immediate && !initialData)

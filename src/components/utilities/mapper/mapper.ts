@@ -140,7 +140,7 @@ export const createBatchMapper = <TInput, TOutput>(
   }
 }
 
-export const createNormalizerMapper = <TInput extends Record<string, unknown>, TOutput>(
+export const createNormalizerMapper = <TInput, TOutput>(
   fieldMappings: Record<keyof TOutput, keyof TInput | ((input: TInput) => unknown)>,
   schema?: z.ZodSchema<TInput>
 ): Mapper<TInput, TOutput> => {
@@ -173,7 +173,8 @@ export const identity = <T>(): Mapper<T, T> => {
 }
 
 export const pipe = <TInput, TOutput>(
-  ...mappers: Mapper<unknown, unknown>[]
+  // eslint-disable-next-line ts/no-explicit-any
+  ...mappers: Array<Mapper<any, any>>
 ): Mapper<TInput, TOutput> => {
   if (mappers.length === 0) {
     throw new Error('pipe requires at least one mapper')

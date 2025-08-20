@@ -17,17 +17,17 @@ const createFailingLoader = (error: Error, delay = 0) => jest.fn().mockImplement
   () => new Promise((_, reject) => setTimeout(() => reject(error), delay))
 )
 
-describe('Resource Component', () => {
+describe('resource Component', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  describe('Basic Loading States', () => {
+  describe('basic Loading States', () => {
     it('should render loading state initially', async () => {
       const loader = createMockLoader(mockData, 100)
 
       render(
-        <Resource loader={loader}>
+        <Resource<TestData> loader={loader}>
           {({ loading, data, error }) => {
             if (loading) return <div data-testid="loading">Loading...</div>
             if (error) return <div data-testid="error">Error occurred</div>
@@ -44,7 +44,7 @@ describe('Resource Component', () => {
       const loader = createMockLoader(mockData, 10)
 
       render(
-        <Resource loader={loader}>
+        <Resource<TestData> loader={loader}>
           {({ loading, data, error }) => {
             if (loading) return <div data-testid="loading">Loading...</div>
             if (error) return <div data-testid="error">Error occurred</div>
@@ -68,7 +68,7 @@ describe('Resource Component', () => {
       const loader = createFailingLoader(mockError, 10)
 
       render(
-        <Resource loader={loader}>
+        <Resource<TestData> loader={loader}>
           {({ loading, data, error }) => {
             if (loading) return <div data-testid="loading">Loading...</div>
             if (error) return <div data-testid="error">{error.message}</div>
@@ -89,12 +89,12 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Initial Data', () => {
+  describe('initial Data', () => {
     it('should render initial data when provided', async () => {
       const loader = createMockLoader(mockData, 10)
 
       render(
-        <Resource loader={loader} initialData={mockData}>
+        <Resource<TestData> loader={loader} initialData={mockData}>
           {({ loading, data, error }) => {
             if (error) return <div data-testid="error">Error occurred</div>
             return (
@@ -125,7 +125,7 @@ describe('Resource Component', () => {
       const loader = createMockLoader(newData, 10)
 
       render(
-        <Resource loader={loader} initialData={mockData}>
+        <Resource<TestData> loader={loader} initialData={mockData}>
           {({ loading, data, error }) => {
             if (error) return <div data-testid="error">Error occurred</div>
             return (
@@ -149,12 +149,12 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Immediate Loading Control', () => {
+  describe('immediate Loading Control', () => {
     it('should not load immediately when immediate is false', () => {
       const loader = createMockLoader(mockData)
 
       render(
-        <Resource loader={loader} immediate={false}>
+        <Resource<TestData> loader={loader} immediate={false}>
           {({ loading, data, error }) => {
             if (loading) return <div data-testid="loading">Loading...</div>
             if (error) return <div data-testid="error">Error occurred</div>
@@ -170,12 +170,12 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Refetch Functionality', () => {
+  describe('refetch Functionality', () => {
     it('should provide refetch function that reloads data', async () => {
       const loader = createMockLoader(mockData, 10)
 
       render(
-        <Resource loader={loader}>
+        <Resource<TestData> loader={loader}>
           {({ loading, data, error, refetch }) => {
             if (loading) return <div data-testid="loading">Loading...</div>
             if (error) return <div data-testid="error">Error occurred</div>
@@ -183,7 +183,7 @@ describe('Resource Component', () => {
               return (
                 <div>
                   <div data-testid="data">{data.name}</div>
-                  <button data-testid="refetch" onClick={() => refetch()}>
+                  <button type="button" data-testid="refetch" onClick={() => refetch()}>
                     Refetch
                   </button>
                 </div>
@@ -210,13 +210,13 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Dependencies', () => {
+  describe('dependencies', () => {
     it('should reload when dependencies change', async () => {
       const loader = createMockLoader(mockData, 10)
       let userId = 1
 
       const { rerender } = render(
-        <Resource loader={loader} deps={[userId]}>
+        <Resource<TestData> loader={loader} deps={[userId]}>
           {({ loading, data }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             data ? <div data-testid="data">{data.name}</div> : null
@@ -232,7 +232,7 @@ describe('Resource Component', () => {
 
       userId = 2
       rerender(
-        <Resource loader={loader} deps={[userId]}>
+        <Resource<TestData> loader={loader} deps={[userId]}>
           {({ loading, data }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             data ? <div data-testid="data">{data.name}</div> : null
@@ -246,13 +246,13 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Callbacks', () => {
+  describe('callbacks', () => {
     it('should call onSuccess when data loads successfully', async () => {
       const loader = createMockLoader(mockData, 10)
       const onSuccess = jest.fn()
 
       render(
-        <Resource loader={loader} onSuccess={onSuccess}>
+        <Resource<TestData> loader={loader} onSuccess={onSuccess}>
           {({ loading, data }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             data ? <div data-testid="data">{data.name}</div> : null
@@ -270,7 +270,7 @@ describe('Resource Component', () => {
       const onError = jest.fn()
 
       render(
-        <Resource loader={loader} onError={onError}>
+        <Resource<TestData> loader={loader} onError={onError}>
           {({ loading, error }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             error ? <div data-testid="error">{error.message}</div> : null
@@ -284,7 +284,7 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Request Cancellation', () => {
+  describe('request Cancellation', () => {
     it('should cancel previous request when deps change', async () => {
       const loader1 = createMockLoader({ id: 1, name: 'User 1' }, 100)
       const loader2 = createMockLoader({ id: 2, name: 'User 2' }, 50)
@@ -292,7 +292,7 @@ describe('Resource Component', () => {
       let currentLoader = loader1
 
       const { rerender } = render(
-        <Resource loader={() => currentLoader()}>
+        <Resource<TestData> loader={() => currentLoader()}>
           {({ loading, data }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             data ? <div data-testid="data">{data.name}</div> : null
@@ -304,7 +304,7 @@ describe('Resource Component', () => {
 
       currentLoader = loader2
       rerender(
-        <Resource loader={() => currentLoader()}>
+        <Resource<TestData> loader={() => currentLoader()}>
           {({ loading, data }) => (
             loading ? <div data-testid="loading">Loading...</div> : 
             data ? <div data-testid="data">{data.name}</div> : null
@@ -318,7 +318,7 @@ describe('Resource Component', () => {
     })
   })
 
-  describe('Compound Components', () => {
+  describe('compound Components', () => {
     it('should export Loading compound component', () => {
       expect(Resource.Loading).toBeDefined()
       expect(typeof Resource.Loading).toBe('function')
@@ -353,7 +353,7 @@ describe('Resource Component', () => {
           {({ error, retry }) => (
             <div>
               <div data-testid="error-message">{error.message}</div>
-              <button data-testid="retry-button" onClick={retry}>
+              <button type="button" data-testid="retry-button" onClick={retry}>
                 Retry
               </button>
             </div>

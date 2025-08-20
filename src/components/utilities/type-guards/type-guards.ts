@@ -8,7 +8,7 @@ export function createAssertionError(message: string, cause?: unknown): Assertio
   const error = new Error(message) as AssertionError
   error.name = 'AssertionError'
   if (cause !== undefined) {
-    (error as any).cause = cause
+    ;(error as Error & { cause?: unknown }).cause = cause
   }
   return error
 }
@@ -33,7 +33,7 @@ export function isSymbol(value: unknown): value is symbol {
   return typeof value === 'symbol'
 }
 
-export function isFunction(value: unknown): value is Function {
+export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
   return typeof value === 'function'
 }
 
@@ -94,7 +94,7 @@ export function isRegExp(value: unknown): value is RegExp {
 }
 
 export function isPromise<T = unknown>(value: unknown): value is Promise<T> {
-  return value instanceof Promise || (isObject(value) && isFunction((value as any).then))
+  return value instanceof Promise || (isObject(value) && isFunction((value as Record<string, unknown>).then))
 }
 
 export function isMap<K = unknown, V = unknown>(value: unknown): value is Map<K, V> {
@@ -122,11 +122,11 @@ export function isTypedArray(value: unknown): value is ArrayBufferView {
 }
 
 export function isIterable<T = unknown>(value: unknown): value is Iterable<T> {
-  return value != null && isFunction((value as any)[Symbol.iterator])
+  return value != null && isFunction((value as Record<string | symbol, unknown>)[Symbol.iterator])
 }
 
 export function isAsyncIterable<T = unknown>(value: unknown): value is AsyncIterable<T> {
-  return value != null && isFunction((value as any)[Symbol.asyncIterator])
+  return value != null && isFunction((value as Record<string | symbol, unknown>)[Symbol.asyncIterator])
 }
 
 export function isEmpty(value: unknown): boolean {
@@ -152,7 +152,7 @@ export function hasProperty<K extends PropertyKey>(
 export function hasMethod<K extends PropertyKey>(
   obj: unknown,
   key: K
-): obj is Record<K, Function> {
+): obj is Record<K, (...args: unknown[]) => unknown> {
   return hasProperty(obj, key) && isFunction(obj[key])
 }
 
@@ -210,7 +210,7 @@ export function assertIsArray<T = unknown>(value: unknown, message?: string): as
   }
 }
 
-export function assertIsFunction(value: unknown, message?: string): asserts value is Function {
+export function assertIsFunction(value: unknown, message?: string): asserts value is (...args: unknown[]) => unknown {
   if (!isFunction(value)) {
     throw createAssertionError(
       message ?? `Expected function, got ${typeof value}`,
@@ -268,7 +268,7 @@ export function createAssertion<T>(schema: z.ZodType<T>, name?: string) {
   return function assertType(value: unknown, message?: string): asserts value is T {
     const result = schema.safeParse(value)
     if (!result.success) {
-      const typeName = name ?? (schema as any)._def?.typeName ?? 'unknown'
+      const typeName = name ?? (schema as z.ZodSchema & { _def?: { typeName?: string } })._def?.typeName ?? 'unknown'
       const errorMessage = message ?? `Expected ${typeName}, validation failed`
       throw createAssertionError(errorMessage, {
         value,
@@ -288,7 +288,7 @@ export function safeValidateSchema<T>(schema: z.ZodType<T>, value: unknown): T |
   return result.success ? result.data : null
 }
 
-export type TypeGuardResult<T> = {
+export interface TypeGuardResult<T> {
   success: boolean
   data?: T
   error?: string
