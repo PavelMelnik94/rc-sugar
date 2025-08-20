@@ -1,3 +1,4 @@
+---
 name: Greetings
 
 on: [pull_request_target, issues]
@@ -9,24 +10,26 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-    - uses: actions/first-interaction@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: |
-          👋 Thanks for opening your first issue! We appreciate your contribution to the project.
-          
-          Please ensure you've provided:
-          - A clear description of the issue
-          - Steps to reproduce (if applicable)
-          - Expected vs actual behavior
-          
-          Our team will review this soon!
-        pr-message: |
-          🎉 Thanks for opening your first pull request! We appreciate your contribution.
-          
-          Please make sure:
-          - [ ] Tests pass locally
-          - [ ] Code follows our style guidelines
-          - [ ] Documentation is updated (if needed)
-          
-          Our team will review this soon!
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            👋 Thanks for opening your first issue!
+            We appreciate your contribution to the project.
+
+            Please ensure you've provided:
+            - A clear description of the issue
+            - Steps to reproduce (if applicable)
+            - Expected vs actual behavior
+
+            Our team will review this soon!
+          pr-message: |
+            🎉 Thanks for opening your first pull request!
+            We appreciate your contribution.
+
+            Please make sure:
+            - [ ] Tests pass locally
+            - [ ] Code follows our style guidelines
+            - [ ] Documentation is updated (if needed)
+
+            Our team will review this soon!

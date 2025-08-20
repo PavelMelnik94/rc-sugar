@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -17,7 +18,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18, 20, 22]
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +39,9 @@ jobs:
         run: npm run lint
 
       - name: Format check (biome - informational only)
-        run: npm run format:check || echo "⚠️ Biome format check failed - this is informational only"
+        run: >
+          npm run format:check ||
+          echo "⚠️ Biome format check failed - this is informational only"
         continue-on-error: true
 
       - name: Test
@@ -57,7 +60,7 @@ jobs:
   build-check:
     name: Build artifacts check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,26 +80,31 @@ jobs:
       - name: Check build artifacts
         run: |
           echo "Checking that all expected build artifacts are present..."
-          test -f dist/index.js || (echo "Missing dist/index.js" && exit 1)
-          test -f dist/index.cjs || (echo "Missing dist/index.cjs" && exit 1)
-          test -f dist/index.d.cts || (echo "Missing dist/index.d.cts" && exit 1)
+          test -f dist/index.js ||
+            (echo "Missing dist/index.js" && exit 1)
+          test -f dist/index.cjs ||
+            (echo "Missing dist/index.cjs" && exit 1)
+          test -f dist/index.d.cts ||
+            (echo "Missing dist/index.d.cts" && exit 1)
           echo "All build artifacts present ✓"
 
       - name: Test exports
         run: |
           echo "Testing package exports..."
-          node -e "const pkg = require('./dist/index.cjs'); console.log('CJS exports:', Object.keys(pkg).length, 'items');"
-          node -e "import('./dist/index.js').then(pkg => console.log('ESM exports:', Object.keys(pkg).length, 'items'));"
+          node -e "const pkg = require('./dist/index.cjs');
+            console.log('CJS exports:', Object.keys(pkg).length, 'items');"
+          node -e "import('./dist/index.js').then(pkg =>
+            console.log('ESM exports:', Object.keys(pkg).length, 'items'));"
 
   dependency-check:
     name: Dependency vulnerabilities
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
         with:

@@ -1,3 +1,4 @@
+---
 name: Auto-label issues
 
 on:
@@ -16,22 +17,30 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Add bug label to issues with 'bug' in title
-        if: contains(github.event.issue.title, 'bug') || contains(github.event.issue.title, 'Bug')
+        if: >
+          contains(github.event.issue.title, 'bug') ||
+          contains(github.event.issue.title, 'Bug')
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label "bug"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add feature label to issues with 'feature' in title
-        if: contains(github.event.issue.title, 'feature') || contains(github.event.issue.title, 'Feature')
+        if: >
+          contains(github.event.issue.title, 'feature') ||
+          contains(github.event.issue.title, 'Feature')
         run: |
-          gh issue edit ${{ github.event.issue.number }} --add-label "enhancement"
+          gh issue edit ${{ github.event.issue.number }} \
+            --add-label "enhancement"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add documentation label to issues with 'doc' in title
-        if: contains(github.event.issue.title, 'doc') || contains(github.event.issue.title, 'documentation')
+        if: >
+          contains(github.event.issue.title, 'doc') ||
+          contains(github.event.issue.title, 'documentation')
         run: |
-          gh issue edit ${{ github.event.issue.number }} --add-label "documentation"
+          gh issue edit ${{ github.event.issue.number }} \
+            --add-label "documentation"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
